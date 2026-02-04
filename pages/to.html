@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tabela de Opções - Hotel Plaza</title>
+    <link rel="stylesheet" href="../styles/global.css" />
+    <link rel="stylesheet" href="../styles/to.css" />
+  </head>
+  <body>
+    <div class="card">
+      <div class="header-controls">
+        <a href="../index.html" class="btn-voltar">🏠 Voltar ao Painel</a>
+      </div>
+      <h3>🏢 Tabela de Opções</h3>
+
+      <div class="secao-config">
+        <div class="grid-datas">
+          <div>
+            <label>Entrada:</label
+            ><input type="date" id="ent" onchange="gerar()" />
+          </div>
+          <div>
+            <label>Saída:</label
+            ><input type="date" id="sai" onchange="gerar()" />
+          </div>
+        </div>
+        <label>Temporada:</label>
+        <select id="temp" onchange="gerar()">
+          <option value="auto" selected>Automático (Pela Data)</option>
+          <option value="baixa">Baixa Temporada</option>
+          <option value="alta">Alta Temporada</option>
+        </select>
+
+        <div class="container-selecao">
+          <div class="coluna-uh">
+            <div class="titulo-coluna">👤 SOLTEIROS</div>
+            <button
+              class="btn-lote"
+              id="btn-solteiro"
+              onclick="toggleGrupo('solteiro')"
+            >
+              ☑️ Marcar Todos
+            </button>
+            <div id="listaSolteiros"></div>
+          </div>
+          <div class="coluna-uh">
+            <div class="titulo-coluna">👥 CASAL / FAMÍLIA</div>
+            <button
+              class="btn-lote"
+              id="btn-casal"
+              onclick="toggleGrupo('casal')"
+            >
+              ☑️ Marcar Todos
+            </button>
+            <div id="listaCasais"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="previa">Selecione as acomodações...</div>
+      <button class="btn-acao" onclick="copiar()">
+        📋 COPIAR PARA WHATSAPP
+      </button>
+    </div>
+
+    <div id="modalMsg">
+      <div class="modal-msg-content">
+        <span id="msgIcon" class="modal-msg-icon"></span>
+        <h3 id="msgTitle" style="margin: 0; color: #075e54"></h3>
+        <p id="msgText" style="color: #666; margin-top: 10px"></p>
+        <button class="btn-msg-ok" onclick="fecharModalMsg()">OK</button>
+      </div>
+    </div>
+
+    <script src="../scripts/tabela-opcoes.js"></script>
+  </body>
+</html>

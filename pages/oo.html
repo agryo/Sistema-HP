@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Orçamento Oficial - Hotel Plaza</title>
+    <link rel="stylesheet" href="../styles/global.css" />
+    <link rel="stylesheet" href="../styles/oo.css" />
+  </head>
+  <body>
+    <div class="config-area">
+      <div class="config-header">
+        <h2>📄 Orçamento Oficial</h2>
+        <div style="display: flex; gap: 8px">
+          <button
+            class="btn"
+            style="background: #128c7e; color: white"
+            onclick="exportarOrcamento()"
+          >
+            💾 Salvar Orçamento
+          </button>
+          <button
+            class="btn"
+            style="background: #444; color: white"
+            onclick="document.getElementById('fileOrcamento').click()"
+          >
+            📂 Abrir
+          </button>
+          <a
+            href="../index.html"
+            class="btn"
+            style="background: #666; color: white; text-decoration: none"
+            >🏠 Voltar</a
+          >
+        </div>
+        <input
+          type="file"
+          id="fileOrcamento"
+          style="display: none"
+          onchange="importarOrcamento(event)"
+        />
+      </div>
+
+      <div class="form-row">
+        <div style="flex: 2">
+          <label>Empresa / Cliente:</label
+          ><input
+            type="text"
+            id="clienteNome"
+            placeholder="Nome da empresa ou pessoa"
+            oninput="atualizarDoc()"
+            style="width: 100%"
+          />
+        </div>
+        <div style="flex: 1">
+          <label>Temporada:</label>
+          <select id="temporada" onchange="atualizarDoc()" style="width: 100%">
+            <option value="auto" selected>Automático (Pela Data)</option>
+            <option value="baixa">Baixa Temporada</option>
+            <option value="alta">Alta Temporada</option>
+          </select>
+        </div>
+        <div style="flex: 1">
+          <label>Entrada:</label
+          ><input
+            type="date"
+            id="dataEntrada"
+            onchange="atualizarDoc()"
+            style="width: 100%"
+          />
+        </div>
+        <div style="flex: 1">
+          <label>Saída:</label
+          ><input
+            type="date"
+            id="dataSaida"
+            onchange="atualizarDoc()"
+            style="width: 100%"
+          />
+        </div>
+      </div>
+
+      <div id="edicaoItens"></div>
+      <button class="btn btn-add" onclick="adicionarLinha()">
+        + ADICIONAR NOVA UH
+      </button>
+
+      <div class="batch-controls">
+        <button class="btn btn-bulk" onclick="marcarTodos('cafe', true)">
+          ☕ Todos com Café
+        </button>
+        <button class="btn btn-bulk" onclick="marcarTodos('cafe', false)">
+          ☕ Todos sem Café
+        </button>
+        <button class="btn btn-bulk" onclick="marcarTodos('almoco', true)">
+          🍽️ Todos com Almoço
+        </button>
+        <button class="btn btn-bulk" onclick="marcarTodos('almoco', false)">
+          🍽️ Todos sem Almoço
+        </button>
+      </div>
+
+      <button class="btn btn-print" onclick="window.print()">
+        🖨️ IMPRIMIR / GERAR PDF
+      </button>
+    </div>
+
+    <div class="documento">
+      <div class="header-doc">
+        <div class="logo-container">
+          <img src="../assets/img/logo_plaza.png" alt="Logo" />
+        </div>
+        <div class="hotel-info-doc">
+          <h1>A. M. da Silva Hotel Plaza</h1>
+          <p>CNPJ: 62.546.482/0001-3 | (84) 99180-1306</p>
+          <p>Rodovia RN 288, 91, Cruzeta - RN</p>
+        </div>
+      </div>
+
+      <div class="doc-title">Orçamento de Hospedagem</div>
+
+      <p style="font-size: 11px">
+        À <strong><span id="docCliente">Nome do Cliente</span></strong
+        >,
+      </p>
+      <p style="font-size: 10px">
+        Proposta para o período de <span id="docPeriodo">--</span> (<span
+          id="docNoites"
+          >0</span
+        >
+        <span id="labelDiaria">diária</span>):
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 30px">Qtd</th>
+            <th>Acomodação</th>
+            <th style="width: 150px">Serviços</th>
+            <th>Vlr. Diária</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody id="tabelaCorpo"></tbody>
+        <tfoot>
+          <tr class="total-row">
+            <td colspan="4" style="text-align: right">VALOR TOTAL:</td>
+            <td id="totalGeral">R$ 0,00</td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <div class="check-info-box">
+        <span
+          >📥 <strong>Check-in:</strong>
+          <span id="checkinData">--</span> (14h)</span
+        >
+        <span
+          >📤 <strong>Check-out:</strong>
+          <span id="checkoutData">--</span> (11h)</span
+        >
+      </div>
+
+      <div class="obs-doc">
+        <strong>Observações:</strong>
+        <ul style="margin: 3px 0; padding-left: 15px">
+          <li>Incluso Wi-Fi e Estacionamento monitorado.</li>
+          <li>Café da manhã: 07h às 09h.</li>
+          <li>
+            Almoço opcional: <span id="obsValorAlmoco">R$ 30,00</span> por
+            pessoa (Buffet Livre).
+          </li>
+          <li>Proposta válida por 48 horas, sujeita a disponibilidade.</li>
+        </ul>
+      </div>
+
+      <div class="footer-assinaturas">
+        <div class="assinatura-box">Setor de Reservas - Hotel Plaza</div>
+        <div class="assinatura-box">
+          Aceite do Cliente (Carimbo e Assinatura)
+        </div>
+      </div>
+    </div>
+
+    <div id="modalMsg">
+      <div class="modal-msg-content">
+        <span id="msgIcon" class="modal-msg-icon"></span>
+        <h3 id="msgTitle" style="margin: 0; color: #075e54"></h3>
+        <p id="msgText" style="color: #666; margin-top: 10px"></p>
+        <button class="btn-msg-ok" onclick="fecharModalMsg()">OK</button>
+      </div>
+    </div>
+
+    <div
+      id="modalConfirmDelete"
+      style="
+        display: none;
+        position: fixed;
+        z-index: 10000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(3px);
+      "
+    >
+      <div
+        style="
+          background-color: #fff;
+          margin: 15% auto;
+          padding: 30px;
+          border-radius: 12px;
+          width: 90%;
+          max-width: 380px;
+          text-align: center;
+          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+          border-top: 5px solid #dc3545;
+        "
+      >
+        <div style="font-size: 32px; margin-bottom: 15px">⚠️</div>
+        <h3 style="margin: 0 0 10px 0; color: #dc3545">Remover Item?</h3>
+        <p style="color: #666; font-size: 14px; margin-bottom: 25px">
+          Você tem certeza que deseja excluir esta linha do orçamento?
+        </p>
+        <div style="display: flex; justify-content: center; gap: 10px">
+          <button
+            onclick="fecharModalConfirmacao()"
+            style="
+              padding: 10px 20px;
+              border: 1px solid #ddd;
+              background: #f8f9fa;
+              color: #333;
+              border-radius: 6px;
+              cursor: pointer;
+              font-weight: 600;
+            "
+          >
+            Cancelar
+          </button>
+          <button
+            onclick="confirmarExclusao()"
+            style="
+              padding: 10px 20px;
+              border: none;
+              background: #dc3545;
+              color: white;
+              border-radius: 6px;
+              cursor: pointer;
+              font-weight: 600;
+            "
+          >
+            Sim, Excluir
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="../scripts/orcamento-oficial.js"></script>
+  </body>
+</html>

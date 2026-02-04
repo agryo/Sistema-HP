@@ -1,0 +1,98 @@
+{
+  "cabecalho": "ORCAMENTO_SALVO_PLAZA",
+  "cliente": "Banda JotaPê",
+  "temporada": "baixa",
+  "entrada": "2026-02-06",
+  "saida": "2026-02-07",
+  "itens": [
+    {
+      "id": 1769814216836,
+      "catId": "std_plus",
+      "qtd": 1,
+      "cafe": true,
+      "almoco": true,
+      "cargo": "Staff"
+    },
+    {
+      "id": 1769814271490,
+      "catId": "uh_1769990100266",
+      "qtd": 1,
+      "cafe": true,
+      "almoco": true,
+      "cargo": "Baixista, Guitarrista e Baterista"
+    },
+    {
+      "id": 1769814273866,
+      "catId": "uh_1769990100266",
+      "qtd": 1,
+      "cafe": true,
+      "almoco": true,
+      "cargo": "Sanfoneiro, Percussionista e GF"
+    },
+    {
+      "id": 1769814303394,
+      "catId": "std_prom",
+      "qtd": 1,
+      "cafe": true,
+      "almoco": true,
+      "cargo": "Motorista"
+    },
+    {
+      "id": 1769814304154,
+      "catId": "std_plus",
+      "qtd": 1,
+      "cafe": true,
+      "almoco": true,
+      "cargo": "Roadies"
+    },
+    {
+      "id": 1769814306314,
+      "catId": "uh_1769990100266",
+      "qtd": 1,
+      "cafe": true,
+      "almoco": true,
+      "cargo": "Equipe Técnica (Som e Luz)"
+    },
+    {
+      "id": 1769814333026,
+      "catId": "std_prom",
+      "qtd": 1,
+      "cafe": true,
+      "almoco": true,
+      "cargo": "Produtor Artístico"
+    },
+    {
+      "id": 1769814333786,
+      "catId": "std_prom",
+      "qtd": 1,
+      "cafe": true,
+      "almoco": true,
+      "cargo": "Produtor Geral"
+    },
+    {
+      "id": 1769814334922,
+      "catId": "std_plus",
+      "qtd": 1,
+      "cafe": true,
+      "almoco": true,
+      "cargo": "Audiovisual"
+    },
+    {
+      "id": 1769814354106,
+      "catId": "uh_1769990272579",
+      "qtd": 1,
+      "cafe": true,
+      "almoco": true,
+      "cargo": "Cantor"
+    },
+    {
+      "id": 1769814355674,
+      "catId": "uh_1769990272579",
+      "qtd": 1,
+      "cafe": true,
+      "almoco": true,
+      "cargo": "Empresários"
+    }
+  ],
+  "valorAlmoco": 30
+}

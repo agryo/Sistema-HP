@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tabela de Preços - Hotel Plaza</title>
+    <link rel="stylesheet" href="../styles/global.css" />
+    <link rel="stylesheet" href="../styles/tp.css" />
+  </head>
+  <body>
+    <div class="no-print">
+      <button class="btn btn-baixa" onclick="gerarTabela('baixa')">
+        ❄️ Baixa Temporada
+      </button>
+      <button class="btn btn-alta" onclick="gerarTabela('alta')">
+        🔥 Alta Temporada
+      </button>
+      <button class="btn btn-print" onclick="window.print()">
+        🖨️ Imprimir PDF
+      </button>
+      <button
+        class="btn btn-voltar"
+        onclick="window.location.href = '../index.html'"
+      >
+        ⬅️ Voltar
+      </button>
+    </div>
+
+    <div id="folha-a4" class="page">
+      <div class="header">
+        <h1 id="titulo-temporada">TABELA DE PREÇOS</h1>
+      </div>
+      <div id="conteudo-tabela" class="tabela-container"></div>
+    </div>
+
+    <script src="../scripts/tabela-precos.js"></script>
+  </body>
+</html>

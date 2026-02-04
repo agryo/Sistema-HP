@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Painel de Controle - Hotel Plaza</title>
+    <link rel="stylesheet" href="styles/global.css" />
+    <link rel="stylesheet" href="styles/index.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="header-main">
+        <img src="assets/img/logo_plaza.png" alt="Logo Hotel Plaza" />
+        <h1>Portal de Preços do Hotel Plaza</h1>
+      </div>
+
+      <div class="grid-links">
+        <a href="pages/or.html" class="card-link">
+          <h3>🎊 Orçamento Rápido</h3>
+          <p id="labelFest">Carga: --</p>
+        </a>
+        <a href="pages/to.html" class="card-link">
+          <h3>🏢 Tabela de Opções</h3>
+          <p>Várias UHs e Descrição</p>
+        </a>
+        <a href="pages/oo.html" class="card-link">
+          <h3>📄 Orçamento Oficial</h3>
+          <p>PDF, Itens e Almoço</p>
+        </a>
+        <a href="pages/tp.html" class="card-link">
+          <h3>📊 Tabela de Preços</h3>
+          <p>PDF por Temporada</p>
+        </a>
+      </div>
+
+      <button class="btn-config-master" onclick="verificarAcessoConfig()">
+        ⚙️ CONFIGURAR TARIFÁRIO E SISTEMA
+      </button>
+    </div>
+
+    <div id="modalSenha">
+      <div class="modal-msg-content" style="max-width: 350px">
+        <span class="modal-msg-icon">🔒</span>
+        <h3 style="margin: 0; color: #075e54">Acesso Restrito</h3>
+        <p style="color: #666; font-size: 13px">
+          Digite a senha mestra para continuar.
+        </p>
+        <div class="input-group" style="margin-top: 15px">
+          <input
+            type="password"
+            id="input_senha_acesso"
+            placeholder="Senha do sistema"
+            style="text-align: center; padding: 12px"
+            onkeydown="
+              if (event.key === 'Enter') {
+                event.preventDefault();
+                confirmarSenhaAcesso();
+              }
+            "
+          />
+        </div>
+        <div
+          style="
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+          "
+        >
+          <button class="btn-conf-nao" onclick="fecharModalSenha()">
+            Cancelar
+          </button>
+          <button
+            class="btn-conf-sim"
+            style="background: #25d366"
+            onclick="confirmarSenhaAcesso()"
+          >
+            Entrar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="modalConfirmaSenha">
+      <div class="modal-msg-content" style="max-width: 350px">
+        <span class="modal-msg-icon">🔐</span>
+        <h3 style="margin: 0; color: #075e54">Confirmar Senha</h3>
+        <p style="color: #666; font-size: 13px">
+          Repita a nova senha para confirmar.
+        </p>
+        <div class="input-group" style="margin-top: 15px">
+          <input
+            type="password"
+            id="input_confirma_nova_senha"
+            placeholder="Repita a nova senha"
+            style="text-align: center; padding: 12px"
+            onkeydown="
+              if (event.key === 'Enter') {
+                event.preventDefault();
+                processarMudancaSenha();
+              }
+            "
+          />
+        </div>
+        <div
+          style="
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+          "
+        >
+          <button class="btn-conf-nao" onclick="fecharModalConfirmaSenha()">
+            Cancelar
+          </button>
+          <button
+            class="btn-conf-sim"
+            style="background: #25d366"
+            onclick="processarMudancaSenha()"
+          >
+            Confirmar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Configurações Globais do Sistema</h2>
+          <span style="font-size: 12px; color: #666"
+            >Clique em uma linha para editar detalhes</span
+          >
+        </div>
+
+        <div class="config-topo" style="flex-wrap: nowrap; align-items: center">
+          <div class="input-group" style="flex: 0 0 240px; min-width: 220px">
+            <label>Nome da Festividade (Orçamento Rápido):</label>
+            <input type="text" id="cfg_fest" />
+          </div>
+          <div
+            class="input-group"
+            style="flex: 0 0 110px; min-width: 105px; margin-left: 8px"
+          >
+            <label>Valor Almoço (R$):</label>
+            <input type="number" id="cfg_alm" step="0,01" />
+          </div>
+
+          <div class="input-group" style="flex: 0 0 110px; min-width: 105px">
+            <label>Qtd. Total de UHs:</label
+            ><input
+              type="number"
+              id="cfg_total_uhs"
+              oninput="renderizarChecksNumbers()"
+            />
+          </div>
+          <div class="input-group" style="flex: 0 0 700px; margin-right: 8px">
+            <label>Comodidades Globais (Separe por vírgula):</label>
+            <input
+              type="text"
+              id="cfg_comodidades_globais"
+              placeholder="Frigobar, TV, Hidro..."
+            />
+          </div>
+        </div>
+        <div class="config-middle">
+          <div
+            style="
+              display: flex;
+              gap: 15px;
+              border-right: 2px solid #ccc;
+              padding-right: 25px;
+            "
+          >
+            <div class="input-group" style="width: 135px">
+              <label>Início Alta Temp.:</label>
+              <input type="date" id="cfg_alta_inicio" />
+            </div>
+            <div class="input-group" style="width: 135px">
+              <label>Fim Alta Temp.:</label>
+              <input type="date" id="cfg_alta_fim" />
+            </div>
+          </div>
+          <div class="input-group" style="flex: 1; min-width: 300px">
+            <label>Horários das Refeições:</label>
+            <div
+              style="
+                display: flex;
+                gap: 14px;
+                align-items: center;
+                white-space: nowrap;
+                overflow-x: auto;
+              "
+            >
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 6px;
+                  min-width: 120px;
+                "
+              >
+                <input
+                  type="checkbox"
+                  id="cfg_check_cafe"
+                  style="width: auto; margin-right: 5px"
+                  title="Exibir nas mensagens"
+                />
+                <small
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #075e54;
+                    margin-right: 6px;
+                  "
+                  >Café:</small
+                >
+                <input type="time" id="cfg_hor_cafe_start" />
+                <input type="time" id="cfg_hor_cafe_end" />
+              </div>
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 6px;
+                  min-width: 150px;
+                "
+              >
+                <input
+                  type="checkbox"
+                  id="cfg_check_almoco"
+                  style="width: auto; margin-right: 5px"
+                  title="Exibir nas mensagens"
+                />
+                <small
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #075e54;
+                    margin-right: 6px;
+                  "
+                  >Almoço:</small
+                >
+                <input type="time" id="cfg_hor_almoco_start" />
+                <input type="time" id="cfg_hor_almoco_end" />
+              </div>
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 6px;
+                  min-width: 120px;
+                "
+              >
+                <input
+                  type="checkbox"
+                  id="cfg_check_janta"
+                  style="width: auto; margin-right: 5px"
+                  title="Exibir nas mensagens"
+                />
+                <small
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #075e54;
+                    margin-right: 6px;
+                  "
+                  >Lanche à Noite:</small
+                >
+                <input type="time" id="cfg_hor_janta_start" />
+                <input type="time" id="cfg_hor_janta_end" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="config-layout">
+          <div class="config-left">
+            <button class="btn-add-uh" onclick="adicionarUH()">
+              ➕ ADICIONAR NOVA UH
+            </button>
+            <div class="table-container">
+              <table>
+                <colgroup>
+                  <col style="width: 44%" />
+                  <col style="width: 13%" />
+                  <col style="width: 13%" />
+                  <col style="width: 13%" />
+                  <col style="width: 13%" />
+                  <col style="width: 4%" />
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th rowspan="2">UH (Unidade)</th>
+                    <th colspan="2">Alta Temporada</th>
+                    <th colspan="2">Baixa Temporada</th>
+                    <th rowspan="2">Ações</th>
+                  </tr>
+                  <tr>
+                    <th class="sub-th">C/ Café</th>
+                    <th class="sub-th">S/ Café</th>
+                    <th class="sub-th">C/ Café</th>
+                    <th class="sub-th">S/ Café</th>
+                  </tr>
+                </thead>
+                <tbody id="corpoTabela"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="config-right">
+            <div class="painel-secao" id="painelDetalhes">
+              <h4
+                style="
+                  margin: 0 0 15px 0;
+                  color: #075e54;
+                  border-bottom: 1px solid #ddd;
+                  padding-bottom: 5px;
+                "
+              >
+                Detalhes:
+                <span id="detalhe_nome_uh_label">Selecione uma UH</span>
+              </h4>
+
+              <!-- Tipo de Ocupação centralizado acima dos campos de camas -->
+              <div
+                style="
+                  display: flex;
+                  justify-content: center;
+                  gap: 10px;
+                  margin-bottom: 10px;
+                "
+              >
+                <div class="input-group" style="max-width: 420px; flex: none">
+                  <label style="text-align: center; display: block"
+                    >Tipo de Ocupação:</label
+                  >
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                      gap: 8px;
+                    "
+                  >
+                    <select
+                      id="detalhe_tipo_ocupacao"
+                      onchange="atualizarInfoUH()"
+                    >
+                      <option value="">Automático</option>
+                      <option value="casal">Casal</option>
+                      <option value="solteiro">Solteiro</option>
+                    </select>
+                    <span class="help-icon" tabindex="0"
+                      >ℹ️
+                      <span class="help-tooltip"
+                        >"Automático" define 'Casal' se houver cama de casal,
+                        caso contrário 'Solteiro'. A escolha só afeta UHs com
+                        capacidade até 2 pessoas.</span
+                      >
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="form-row"
+                style="display: flex; gap: 10px; margin-bottom: 15px"
+              >
+                <div class="input-group">
+                  <label>Camas Casal:</label>
+                  <select id="detalhe_casal" onchange="atualizarInfoUH()">
+                    <option value="0">Nenhuma</option>
+                    <option value="1">1 Cama Casal</option>
+                    <option value="2">2 Camas Casal</option>
+                  </select>
+                </div>
+                <div class="input-group">
+                  <label>Camas Solteiro:</label>
+                  <select id="detalhe_solteiro" onchange="atualizarInfoUH()">
+                    <option value="0">Nenhuma</option>
+                    <option value="1">1 Cama Solteiro</option>
+                    <option value="2">2 Camas Solteiro</option>
+                    <option value="3">3 Camas Solteiro</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="input-group" style="margin-bottom: 15px">
+                <label>Descrição / Diferencial:</label>
+                <textarea
+                  id="detalhe_desc"
+                  rows="2"
+                  oninput="atualizarInfoUH()"
+                  placeholder="Ex: Próximo à piscina..."
+                ></textarea>
+              </div>
+
+              <label style="font-weight: bold; font-size: 12px; color: #075e54"
+                >Números desta UH:</label
+              >
+              <div id="listaNumerosUH" class="uh-numbers-grid"></div>
+
+              <label
+                style="
+                  font-weight: bold;
+                  font-size: 12px;
+                  color: #075e54;
+                  margin-top: 15px;
+                  display: block;
+                "
+                >Comodidades desta UH:</label
+              >
+              <div id="listaComodidadesUH" class="comodidades-container"></div>
+            </div>
+
+            <div class="painel-secao" style="border-top: 4px solid #075e54">
+              <h4 style="margin: 0 0 10px 0; color: #075e54">
+                🔐 Senha de Acesso
+              </h4>
+              <div class="input-group" style="position: relative">
+                <label>Alterar Senha do Sistema:</label>
+                <div
+                  style="position: relative; display: flex; align-items: center"
+                >
+                  <input
+                    type="password"
+                    id="cfg_senha_input"
+                    placeholder="Digite a nova senha"
+                    style="padding-right: 40px"
+                  />
+                  <button
+                    type="button"
+                    onclick="toggleVisibilidadeSenha('cfg_senha_input')"
+                    style="
+                      position: absolute;
+                      right: 5px;
+                      background: none;
+                      border: none;
+                      cursor: pointer;
+                      font-size: 18px;
+                      color: #666;
+                      padding: 5px;
+                    "
+                  >
+                    👁️
+                  </button>
+                </div>
+              </div>
+              <button
+                class="btn-add-uh"
+                style="width: 100%; margin-top: 10px; background: #666"
+                onclick="abrirModalConfirmaSenha()"
+              >
+                Mudar Senha
+              </button>
+              <button
+                class="btn-add-uh"
+                style="width: 100%; margin-top: 5px; background: #dc3545"
+                onclick="removerSenhaSistema()"
+              >
+                Remover Senha
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="backup-bar">
+          <button class="btn-backup" onclick="exportarBackup()">
+            📤 Exportar Configuração
+          </button>
+          <button class="btn-backup" onclick="abrirFileImport()">
+            📥 Importar Configuração
+          </button>
+          <input
+            type="file"
+            id="fileIn"
+            style="display: none"
+            onchange="importarBackup(event)"
+          />
+          <button class="btn-backup btn-danger" onclick="limparCacheSistema()">
+            🧹 Limpar Cache
+          </button>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn-voltar" onclick="fecharModalEAtualizar()">
+            Voltar
+          </button>
+          <button class="btn-save" onclick="salvarAlteracoes()">
+            💾 SALVAR TODAS AS ALTERAÇÕES
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="modalMsg">
+      <div class="modal-msg-content">
+        <span id="msgIcon" class="modal-msg-icon"></span>
+        <h3 id="msgTitle" style="margin: 0; color: #075e54"></h3>
+        <p id="msgText" style="color: #666; margin-top: 10px"></p>
+        <button class="btn-msg-ok" onclick="fecharModalMsg()">OK</button>
+      </div>
+    </div>
+
+    <div id="modalConfirm">
+      <div class="modal-msg-content">
+        <span class="modal-msg-icon">⚠️</span>
+        <h3 style="margin: 0; color: #dc3545">Confirmar Exclusão</h3>
+        <p id="confirmText" style="color: #666; margin-top: 10px"></p>
+        <div
+          style="
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+          "
+        >
+          <button class="btn-conf-nao" onclick="fecharConfirm()">
+            Cancelar
+          </button>
+          <button class="btn-conf-sim" id="btnConfirmDelete">
+            Sim, Excluir
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="scripts/config-master.js"></script>
+  </body>
+</html>

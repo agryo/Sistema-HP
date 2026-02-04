@@ -1,0 +1,74 @@
+{
+  "cabecalho": "ORCAMENTO_SALVO_PLAZA",
+  "cliente": "Teste Cliente",
+  "temporada": "baixa",
+  "entrada": "2026-01-31",
+  "saida": "2026-02-01",
+  "itens": [
+    {
+      "id": 1769822002998,
+      "catId": "std_prom",
+      "qtd": 1,
+      "cafe": true,
+      "almoco": true,
+      "cargo": "Teste 1"
+    },
+    {
+      "id": 1769822012742,
+      "catId": "std_plus",
+      "qtd": 1,
+      "cafe": true,
+      "almoco": true,
+      "cargo": "Teste 2"
+    },
+    {
+      "id": 1769822019511,
+      "catId": "uh_1769990100266",
+      "qtd": 1,
+      "cafe": true,
+      "almoco": true,
+      "cargo": "Teste 3"
+    },
+    {
+      "id": 1769822024311,
+      "catId": "uh_1769990175555",
+      "qtd": 1,
+      "cafe": true,
+      "almoco": true,
+      "cargo": "Teste 4"
+    },
+    {
+      "id": 1769822030103,
+      "catId": "uh_1769990272579",
+      "qtd": 1,
+      "cafe": true,
+      "almoco": true,
+      "cargo": "Teste 5"
+    },
+    {
+      "id": 1769822035998,
+      "catId": "uh_1769990299539",
+      "qtd": 1,
+      "cafe": true,
+      "almoco": true,
+      "cargo": "Teste 6"
+    },
+    {
+      "id": 1769822045142,
+      "catId": "uh_1769990321522",
+      "qtd": 1,
+      "cafe": true,
+      "almoco": true,
+      "cargo": "Teste 7"
+    },
+    {
+      "id": 1769822051879,
+      "catId": "uh_1769990349819",
+      "qtd": 1,
+      "cafe": true,
+      "almoco": true,
+      "cargo": "Teste 8"
+    }
+  ],
+  "valorAlmoco": 30
+}
