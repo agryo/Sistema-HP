@@ -274,6 +274,45 @@
           </div>
         </div>
 
+        <!-- BLOCO DE PROMOÇÕES -->
+        <div
+          class="config-middle"
+          style="background: #fff8e1; border: 1px solid #ffe082"
+        >
+          <div
+            class="input-group"
+            style="
+              flex: 0 0 auto;
+              display: flex;
+              align-items: center;
+              gap: 10px;
+            "
+          >
+            <input type="checkbox" id="cfg_promo_ativo" style="width: auto" />
+            <label
+              for="cfg_promo_ativo"
+              style="margin: 0; color: #d84315; font-weight: bold"
+              >ATIVAR PROMOÇÃO</label
+            >
+          </div>
+          <div class="input-group" style="flex: 0 0 100px">
+            <label>Desconto (%):</label>
+            <input type="number" id="cfg_promo_porcentagem" placeholder="15" />
+          </div>
+          <div class="input-group" style="flex: 0 0 100px">
+            <label>Mín. Diárias:</label>
+            <input type="number" id="cfg_promo_min_diarias" placeholder="0" />
+          </div>
+          <div class="input-group" style="flex: 1">
+            <label>Condição / Forma de Pagamento:</label>
+            <input
+              type="text"
+              id="cfg_promo_texto"
+              placeholder="Ex: Pagamento integral via Pix ou Dinheiro"
+            />
+          </div>
+        </div>
+
         <div class="config-layout">
           <div class="config-left">
             <button class="btn-add-uh" onclick="adicionarUH()">

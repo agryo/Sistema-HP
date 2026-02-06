@@ -99,9 +99,6 @@ function gerarTabela(temporada) {
 
       // Regra exclusiva Suíte Deluxe na Alta Temporada
       let htmlPrecoSemCafe = ` - <span class="sem-cafe">R$ ${v2} Sem Café.</span>`;
-      if (temporada === "alta" && sub.nome.toLowerCase().includes("deluxe")) {
-        htmlPrecoSemCafe = "";
-      }
 
       htmlBloco += `
 				<div class="item-preco-linha">

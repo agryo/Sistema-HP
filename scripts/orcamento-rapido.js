@@ -268,6 +268,36 @@ function gerarOrcamento() {
     texto += `\n`;
   }
 
+  // --- LÓGICA DE PROMOÇÃO ---
+  const promoAtiva = localStorage.getItem("plaza_promo_ativa") === "true";
+
+  if (promoAtiva) {
+    const promoMin =
+      parseInt(localStorage.getItem("plaza_promo_min_diarias")) || 0;
+    const promoPct =
+      parseFloat(localStorage.getItem("plaza_promo_porcentagem")) || 0;
+    const promoTxt =
+      localStorage.getItem("plaza_promo_texto") || "pagamento à vista";
+
+    if (noites >= promoMin) {
+      // Calcula descontos
+      const descCom = somaCom * (promoPct / 100);
+      const finalCom = somaCom - descCom;
+
+      const descSem = somaSem * (promoPct / 100);
+      const finalSem = somaSem - descSem;
+
+      texto += `🔥 *PROMOÇÃO ESPECIAL ATIVA:*\n`;
+      texto += `Ganhe *${promoPct}% de desconto* para ${promoTxt}!\n`;
+      texto += `👇 *Valores com desconto aplicado:*\n`;
+      texto += `✅ C/ Café: *${finalCom.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}*\n`;
+      texto += `❌ S/ Café: *${finalSem.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}*\n\n`;
+    } else {
+      texto += `🔥 *PROMOÇÃO ESPECIAL:* Reserve *${promoMin} diárias* ou mais e ganhe *${promoPct}% de desconto* para ${promoTxt}!\n\n`;
+    }
+  }
+  // --------------------------
+
   texto += `⚠️ _Valores sujeitos a disponibilidade no ato da reserva._\n\n`;
   texto += `*Deseja garantir sua reserva agora?*`;
 

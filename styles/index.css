@@ -536,3 +536,22 @@ table td .input-preco {
   padding: 4px 6px;
   font-size: 13px;
 }
+
+/* Ajustes de Impressão */
+@media print {
+  @page {
+    margin: 5mm;
+  }
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  .container {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+  }
+}

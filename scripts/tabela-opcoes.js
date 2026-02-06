@@ -120,6 +120,8 @@ function gerar() {
   const altaInicioStr = localStorage.getItem("plaza_alta_inicio");
   const altaFimStr = localStorage.getItem("plaza_alta_fim");
 
+  const resultadosCalculados = [];
+
   selecionados.forEach((q) => {
     let somaCom = 0;
     let somaSem = 0;
@@ -153,6 +155,8 @@ function gerar() {
       somaCom = base[0] * noites;
       somaSem = base[1] * noites;
     }
+
+    resultadosCalculados.push({ nome: q.nome, com: somaCom, sem: somaSem });
 
     // Valor diária para exibição (média se for auto/misto)
     const diariaMediaCom = somaCom / noites;
@@ -207,6 +211,35 @@ function gerar() {
     if (showJanta)
       texto += `*- Lanche à Noite:* ${horarios.janta[0]} às ${horarios.janta[1]} (opcional)\n`;
     texto += `\n`;
+  }
+
+  // --- LÓGICA DE PROMOÇÃO ---
+  const promoAtiva = localStorage.getItem("plaza_promo_ativa") === "true";
+
+  if (promoAtiva) {
+    const promoMin =
+      parseInt(localStorage.getItem("plaza_promo_min_diarias")) || 0;
+    const promoPct =
+      parseFloat(localStorage.getItem("plaza_promo_porcentagem")) || 0;
+    const promoTxt =
+      localStorage.getItem("plaza_promo_texto") || "pagamento à vista";
+
+    if (noites >= promoMin) {
+      texto += `🔥 *PROMOÇÃO ESPECIAL ATIVA:*\n`;
+      texto += `Ganhe *${promoPct}% de desconto* para ${promoTxt}!\n`;
+      texto += `👇 *Valores com desconto aplicado:*\n`;
+
+      resultadosCalculados.forEach((res) => {
+        const finalCom = res.com - res.com * (promoPct / 100);
+        const finalSem = res.sem - res.sem * (promoPct / 100);
+        texto += `🔹 *${res.nome}*\n`;
+        texto += `   ✅ C/ Café: *${finalCom.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}*\n`;
+        texto += `   ❌ S/ Café: *${finalSem.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}*\n`;
+      });
+      texto += `\n`;
+    } else {
+      texto += `🔥 *PROMOÇÃO ESPECIAL:* Reserve *${promoMin} diárias* ou mais e ganhe *${promoPct}% de desconto* para ${promoTxt}!\n\n`;
+    }
   }
 
   texto += `⚠️ _Valores sujeitos a disponibilidade no ato da reserva._\n\nDeseja garantir sua reserva?`;

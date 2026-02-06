@@ -121,13 +121,21 @@
 }
 
 @media print {
+  @page {
+    margin: 3mm;
+  }
+  body {
+    margin: 0;
+    padding: 0;
+  }
   .no-print {
     display: none;
   }
   .page {
     margin: 0;
     box-shadow: none;
-    width: 210mm;
-    padding: 5mm 10mm;
+    width: 100%;
+    padding: 0;
+    min-height: auto;
   }
 }

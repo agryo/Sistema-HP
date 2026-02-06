@@ -308,6 +308,18 @@ function abrirModal() {
       horariosRefeicoes.janta[2] !== false;
   } catch (e) {}
 
+  // Carrega Promoções
+  const elPromo = document.getElementById("cfg_promo_ativo");
+  if (elPromo) {
+    elPromo.checked = localStorage.getItem("plaza_promo_ativa") === "true";
+    document.getElementById("cfg_promo_porcentagem").value =
+      localStorage.getItem("plaza_promo_porcentagem") || "";
+    document.getElementById("cfg_promo_min_diarias").value =
+      localStorage.getItem("plaza_promo_min_diarias") || "";
+    document.getElementById("cfg_promo_texto").value =
+      localStorage.getItem("plaza_promo_texto") || "";
+  }
+
   renderTabela();
   document.getElementById("modal").style.display = "block";
 
@@ -518,6 +530,24 @@ function salvarAlteracoes() {
     document.getElementById("cfg_comodidades_globais").value,
   );
 
+  // Salva Promoções
+  const elPromo = document.getElementById("cfg_promo_ativo");
+  if (elPromo) {
+    localStorage.setItem("plaza_promo_ativa", elPromo.checked);
+    localStorage.setItem(
+      "plaza_promo_porcentagem",
+      document.getElementById("cfg_promo_porcentagem").value,
+    );
+    localStorage.setItem(
+      "plaza_promo_min_diarias",
+      document.getElementById("cfg_promo_min_diarias").value,
+    );
+    localStorage.setItem(
+      "plaza_promo_texto",
+      document.getElementById("cfg_promo_texto").value,
+    );
+  }
+
   // Salva horários das refeições
   try {
     const h = {
@@ -570,6 +600,10 @@ function limparCacheSistema() {
       "plaza_alta_inicio",
       "plaza_alta_fim",
       "plaza_senha_sistema",
+      "plaza_promo_ativa",
+      "plaza_promo_porcentagem",
+      "plaza_promo_min_diarias",
+      "plaza_promo_texto",
     ];
     chaves.forEach((k) => localStorage.removeItem(k));
     fecharConfirm();
@@ -621,6 +655,16 @@ function exportarBackup() {
     ],
   };
 
+  const elPromo = document.getElementById("cfg_promo_ativo");
+  const promo = elPromo
+    ? {
+        ativo: elPromo.checked,
+        pct: document.getElementById("cfg_promo_porcentagem").value,
+        min: document.getElementById("cfg_promo_min_diarias").value,
+        txt: document.getElementById("cfg_promo_texto").value,
+      }
+    : {};
+
   const dados = {
     cabecalho: "BACKUP_CONFIG_PLAZA",
     t: categoriasAtuais,
@@ -631,6 +675,7 @@ function exportarBackup() {
     u: document.getElementById("cfg_total_uhs").value,
     c: document.getElementById("cfg_comodidades_globais").value.split(","),
     h: hAtual,
+    p: promo,
   };
   const blob = new Blob([JSON.stringify(dados, null, 2)], {
     type: "application/json",
@@ -672,6 +717,13 @@ function importarBackup(event) {
       if (d.c) localStorage.setItem("plaza_comodidades_mestre", d.c.join(","));
       if (d.h)
         localStorage.setItem("plaza_horarios_refeicoes", JSON.stringify(d.h));
+
+      if (d.p) {
+        localStorage.setItem("plaza_promo_ativa", d.p.ativo);
+        localStorage.setItem("plaza_promo_porcentagem", d.p.pct);
+        localStorage.setItem("plaza_promo_min_diarias", d.p.min);
+        localStorage.setItem("plaza_promo_texto", d.p.txt);
+      }
 
       abrirModal();
       showMsg("Sucesso", "Dados importados com sucesso!", "sucesso");
