@@ -215,8 +215,48 @@ function gerar() {
 
   // --- LÓGICA DE PROMOÇÃO ---
   const promoAtiva = localStorage.getItem("plaza_promo_ativa") === "true";
+  const promoSomenteAlta =
+    localStorage.getItem("plaza_promo_somente_alta") === "true";
+  const promoMsgBaixa =
+    localStorage.getItem("plaza_promo_msg_baixa") === "true";
 
-  if (promoAtiva) {
+  let aplicarPromo = promoAtiva;
+  let exibirApenasMsg = false;
+
+  if (promoAtiva && promoSomenteAlta) {
+    let temAlta = false;
+    if (t === "alta") {
+      temAlta = true;
+    } else if (t === "baixa") {
+      temAlta = false;
+    } else {
+      // Auto: verifica se há dias de alta no período
+      let current = new Date(d1);
+      current.setHours(0, 0, 0, 0);
+      const end = new Date(d2);
+      end.setHours(0, 0, 0, 0);
+
+      if (altaInicioStr && altaFimStr) {
+        const dtAltaIni = new Date(altaInicioStr + "T00:00:00");
+        const dtAltaFim = new Date(altaFimStr + "T00:00:00");
+        while (current < end) {
+          if (current >= dtAltaIni && current <= dtAltaFim) {
+            temAlta = true;
+            break;
+          }
+          current.setDate(current.getDate() + 1);
+        }
+      } else {
+        temAlta = true; // Fallback padrão
+      }
+    }
+    if (!temAlta) {
+      aplicarPromo = false;
+      if (promoMsgBaixa) exibirApenasMsg = true;
+    }
+  }
+
+  if (aplicarPromo) {
     const promoMin =
       parseInt(localStorage.getItem("plaza_promo_min_diarias")) || 0;
     const promoPct =
@@ -240,6 +280,13 @@ function gerar() {
     } else {
       texto += `🔥 *PROMOÇÃO ESPECIAL:* Reserve *${promoMin} diárias* ou mais e ganhe *${promoPct}% de desconto* para ${promoTxt}!\n\n`;
     }
+  } else if (exibirApenasMsg) {
+    const promoPct =
+      parseFloat(localStorage.getItem("plaza_promo_porcentagem")) || 0;
+    const promoTxt =
+      localStorage.getItem("plaza_promo_texto") || "pagamento à vista";
+
+    texto += `🔥 *PROMOÇÃO ESPECIAL:* Ganhe *${promoPct}% de desconto* para ${promoTxt} (Consulte condições para alta temporada)!\n\n`;
   }
 
   texto += `⚠️ _Valores sujeitos a disponibilidade no ato da reserva._\n\nDeseja garantir sua reserva?`;

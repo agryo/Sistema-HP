@@ -314,6 +314,8 @@
     "ativo": true,
     "pct": "15",
     "min": "3",
-    "txt": "o período do *Carnaval 2026* no pagamento *total via PIX*"
+    "txt": "o período do *Carnaval 2026* no pagamento *total via PIX*",
+    "somenteAlta": true,
+    "msgBaixa": true
   }
 }

@@ -493,6 +493,15 @@ tr.clickable-row:hover {
   opacity: 1;
 }
 
+/* Variação para exibir à direita (evita sair da tela em itens da esquerda) */
+.help-tooltip-right {
+  bottom: auto !important;
+  top: 50% !important;
+  left: 100% !important;
+  transform: translateY(-50%) !important;
+  margin-left: 10px;
+}
+
 /* Ajuste final: larguras controladas via <colgroup> na tabela do modal */
 .table-container table col:nth-child(1) {
   width: 44%;

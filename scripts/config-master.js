@@ -318,6 +318,17 @@ function abrirModal() {
       localStorage.getItem("plaza_promo_min_diarias") || "";
     document.getElementById("cfg_promo_texto").value =
       localStorage.getItem("plaza_promo_texto") || "";
+    const elPromoAlta = document.getElementById("cfg_promo_somente_alta");
+    if (elPromoAlta) {
+      elPromoAlta.checked =
+        localStorage.getItem("plaza_promo_somente_alta") === "true";
+    }
+    const elPromoMsgBaixa = document.getElementById("cfg_promo_msg_baixa");
+    if (elPromoMsgBaixa) {
+      elPromoMsgBaixa.checked =
+        localStorage.getItem("plaza_promo_msg_baixa") === "true";
+    }
+    atualizarEstadoPromo(); // Atualiza o estado visual (disabled/enabled) ao abrir
   }
 
   renderTabela();
@@ -387,6 +398,16 @@ function renderizarChecksNumeros() {
             </div>`;
   }
   container.innerHTML = html;
+}
+
+// Controla a habilitação do checkbox "Msg Baixa" baseado no "Só Alta"
+function atualizarEstadoPromo() {
+  const chkAlta = document.getElementById("cfg_promo_somente_alta");
+  const chkMsg = document.getElementById("cfg_promo_msg_baixa");
+  if (chkAlta && chkMsg) {
+    chkMsg.disabled = !chkAlta.checked;
+    if (!chkAlta.checked) chkMsg.checked = false; // Desmarca se desabilitar
+  }
 }
 
 function toggleNum(num) {
@@ -546,6 +567,14 @@ function salvarAlteracoes() {
       "plaza_promo_texto",
       document.getElementById("cfg_promo_texto").value,
     );
+    const elPromoAlta = document.getElementById("cfg_promo_somente_alta");
+    if (elPromoAlta) {
+      localStorage.setItem("plaza_promo_somente_alta", elPromoAlta.checked);
+    }
+    const elPromoMsgBaixa = document.getElementById("cfg_promo_msg_baixa");
+    if (elPromoMsgBaixa) {
+      localStorage.setItem("plaza_promo_msg_baixa", elPromoMsgBaixa.checked);
+    }
   }
 
   // Salva horários das refeições
@@ -604,6 +633,8 @@ function limparCacheSistema() {
       "plaza_promo_porcentagem",
       "plaza_promo_min_diarias",
       "plaza_promo_texto",
+      "plaza_promo_somente_alta",
+      "plaza_promo_msg_baixa",
     ];
     chaves.forEach((k) => localStorage.removeItem(k));
     fecharConfirm();
@@ -662,6 +693,12 @@ function exportarBackup() {
         pct: document.getElementById("cfg_promo_porcentagem").value,
         min: document.getElementById("cfg_promo_min_diarias").value,
         txt: document.getElementById("cfg_promo_texto").value,
+        somenteAlta: document.getElementById("cfg_promo_somente_alta")
+          ? document.getElementById("cfg_promo_somente_alta").checked
+          : false,
+        msgBaixa: document.getElementById("cfg_promo_msg_baixa")
+          ? document.getElementById("cfg_promo_msg_baixa").checked
+          : false,
       }
     : {};
 
@@ -723,6 +760,11 @@ function importarBackup(event) {
         localStorage.setItem("plaza_promo_porcentagem", d.p.pct);
         localStorage.setItem("plaza_promo_min_diarias", d.p.min);
         localStorage.setItem("plaza_promo_texto", d.p.txt);
+        localStorage.setItem(
+          "plaza_promo_somente_alta",
+          d.p.somenteAlta || false,
+        );
+        localStorage.setItem("plaza_promo_msg_baixa", d.p.msgBaixa || false);
       }
 
       abrirModal();

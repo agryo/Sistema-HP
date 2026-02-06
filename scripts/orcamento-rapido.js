@@ -270,8 +270,23 @@ function gerarOrcamento() {
 
   // --- LÓGICA DE PROMOÇÃO ---
   const promoAtiva = localStorage.getItem("plaza_promo_ativa") === "true";
+  const promoSomenteAlta =
+    localStorage.getItem("plaza_promo_somente_alta") === "true";
+  const promoMsgBaixa =
+    localStorage.getItem("plaza_promo_msg_baixa") === "true";
 
-  if (promoAtiva) {
+  let aplicarPromo = promoAtiva;
+  let exibirApenasMsg = false;
+
+  if (promoAtiva && promoSomenteAlta) {
+    if (diasAlta === 0) {
+      aplicarPromo = false;
+      // Se estiver configurado para exibir msg na baixa, ativamos a flag
+      if (promoMsgBaixa) exibirApenasMsg = true;
+    }
+  }
+
+  if (aplicarPromo) {
     const promoMin =
       parseInt(localStorage.getItem("plaza_promo_min_diarias")) || 0;
     const promoPct =
@@ -295,6 +310,17 @@ function gerarOrcamento() {
     } else {
       texto += `🔥 *PROMOÇÃO ESPECIAL:* Reserve *${promoMin} diárias* ou mais e ganhe *${promoPct}% de desconto* para ${promoTxt}!\n\n`;
     }
+  } else if (exibirApenasMsg) {
+    // Exibe apenas a mensagem informativa, sem cálculos
+    const promoPct =
+      parseFloat(localStorage.getItem("plaza_promo_porcentagem")) || 0;
+    const promoTxt =
+      localStorage.getItem("plaza_promo_texto") || "pagamento à vista";
+    const promoMin =
+      parseInt(localStorage.getItem("plaza_promo_min_diarias")) || 0;
+
+    // Mensagem genérica informando que existe promoção (mas não aplicada aos valores acima pois é baixa temporada/fora da regra de calculo automatico)
+    texto += `🔥 *PROMOÇÃO ESPECIAL:* Ganhe *${promoPct}% de desconto* para ${promoTxt} (Consulte condições para alta temporada)!\n\n`;
   }
   // --------------------------
 

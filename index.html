@@ -280,36 +280,126 @@
           style="background: #fff8e1; border: 1px solid #ffe082"
         >
           <div
-            class="input-group"
             style="
-              flex: 0 0 auto;
+              width: 10%;
               display: flex;
+              flex-direction: row;
               align-items: center;
-              gap: 10px;
             "
           >
-            <input type="checkbox" id="cfg_promo_ativo" style="width: auto" />
-            <label
-              for="cfg_promo_ativo"
-              style="margin: 0; color: #d84315; font-weight: bold"
-              >ATIVAR PROMOÇÃO</label
+            <div
+              class="input-group"
+              style="
+                flex: 0 0 auto;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                min-width: auto;
+              "
             >
+              <input type="checkbox" id="cfg_promo_ativo" style="width: auto" />
+              <label
+                for="cfg_promo_ativo"
+                style="margin: 0; color: #d84315; font-weight: bold"
+                >ATIVAR</label
+              >
+              <span class="help-icon" tabindex="0"
+                >ℹ️
+              <span class="help-tooltip help-tooltip-right"
+                  >Liga/Desliga todo o sistema de promoções nos
+                  orçamentos.</span
+                >
+              </span>
+            </div>
+            <div
+              class="input-group"
+              style="
+                flex: 0 0 auto;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                min-width: auto;
+              "
+            >
+              <input
+                type="checkbox"
+                id="cfg_promo_somente_alta"
+                style="width: auto"
+                onchange="atualizarEstadoPromo()"
+              />
+              <label
+                for="cfg_promo_somente_alta"
+                style="
+                  margin: 0;
+                  color: #d84315;
+                  font-weight: bold;
+                  font-size: 11px;
+                "
+                >SÓ ALTA</label
+              >
+              <span class="help-icon" tabindex="0"
+                >ℹ️
+                <span class="help-tooltip"
+                  >Se marcado, o desconto só será aplicado se as datas
+                  selecionadas estiverem na Alta Temporada.</span
+                >
+              </span>
+            </div>
+            <div
+              class="input-group"
+              style="
+                flex: 0 0 auto;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                min-width: auto;
+              "
+            >
+              <input
+                type="checkbox"
+                id="cfg_promo_msg_baixa"
+                style="width: auto"
+              />
+              <label
+                for="cfg_promo_msg_baixa"
+                style="
+                  margin: 0;
+                  color: #d84315;
+                  font-weight: bold;
+                  font-size: 11px;
+                "
+                >MSG BAIXA</label
+              >
+              <span class="help-icon" tabindex="0"
+                >ℹ️
+                <span class="help-tooltip"
+                  >Exibe o texto da promoção na Baixa Temporada apenas como
+                  informativo, sem aplicar o desconto matemático.</span
+                >
+              </span>
+            </div>
           </div>
-          <div class="input-group" style="flex: 0 0 100px">
-            <label>Desconto (%):</label>
-            <input type="number" id="cfg_promo_porcentagem" placeholder="15" />
-          </div>
-          <div class="input-group" style="flex: 0 0 100px">
-            <label>Mín. Diárias:</label>
-            <input type="number" id="cfg_promo_min_diarias" placeholder="0" />
-          </div>
-          <div class="input-group" style="flex: 1">
-            <label>Condição / Forma de Pagamento:</label>
-            <input
-              type="text"
-              id="cfg_promo_texto"
-              placeholder="Ex: Pagamento integral via Pix ou Dinheiro"
-            />
+          <div style="width: 100%; display: flex; gap: 15px">
+            <div class="input-group" style="flex: 0 0 100px">
+              <label>Desconto (%):</label>
+              <input
+                type="number"
+                id="cfg_promo_porcentagem"
+                placeholder="15"
+              />
+            </div>
+            <div class="input-group" style="flex: 0 0 100px">
+              <label>Mín. Diárias:</label>
+              <input type="number" id="cfg_promo_min_diarias" placeholder="0" />
+            </div>
+            <div class="input-group" style="flex: 1">
+              <label>Condição / Forma de Pagamento:</label>
+              <input
+                type="text"
+                id="cfg_promo_texto"
+                placeholder="Ex: Pagamento integral via Pix ou Dinheiro"
+              />
+            </div>
           </div>
         </div>
 
