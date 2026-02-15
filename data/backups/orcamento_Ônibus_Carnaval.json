@@ -1,0 +1,66 @@
+{
+  "cabecalho": "ORCAMENTO_SALVO_PLAZA",
+  "cliente": "Ônibus Carnaval",
+  "temporada": "auto",
+  "entrada": "2026-02-14",
+  "saida": "2026-02-16",
+  "itens": [
+    {
+      "id": 1771104426100,
+      "catId": "uh_1769990100266",
+      "qtd": 2,
+      "cafe": true,
+      "almoco": false,
+      "cargo": "AP02 e AP05"
+    },
+    {
+      "id": 1771104523413,
+      "catId": "uh_1769990321522",
+      "qtd": 1,
+      "cafe": true,
+      "almoco": false,
+      "cargo": "AP03"
+    },
+    {
+      "id": 1771104533868,
+      "catId": "uh_1769990299539",
+      "qtd": 1,
+      "cafe": true,
+      "almoco": false,
+      "cargo": "AP08"
+    },
+    {
+      "id": 1771104567996,
+      "catId": "std_plus",
+      "qtd": 3,
+      "cafe": true,
+      "almoco": false,
+      "cargo": "AP11, AP13 e AP14"
+    },
+    {
+      "id": 1771104627316,
+      "catId": "uh_1769990272579",
+      "qtd": 1,
+      "cafe": true,
+      "almoco": false,
+      "cargo": "AP04 e AP12"
+    },
+    {
+      "id": 1771104652908,
+      "catId": "std_prom",
+      "qtd": 3,
+      "cafe": true,
+      "almoco": false,
+      "cargo": "AP15, AP16 e AP17"
+    },
+    {
+      "id": 1771110176845,
+      "catId": "uh_1769990272579",
+      "qtd": 1,
+      "cafe": true,
+      "almoco": false,
+      "cargo": "Converter 1 Plus em Triplo"
+    }
+  ],
+  "valorAlmoco": 30
+}
