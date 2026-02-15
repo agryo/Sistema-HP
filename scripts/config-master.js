@@ -273,6 +273,8 @@ function abrirModal() {
     localStorage.getItem("plaza_festividade") || "Carnaval 2026";
   document.getElementById("cfg_alm").value =
     localStorage.getItem("plaza_valor_almoco") || 30.0;
+  document.getElementById("cfg_kwh").value =
+    localStorage.getItem("plaza_valor_kwh") || 1.8;
   document.getElementById("cfg_alta_inicio").value =
     localStorage.getItem("plaza_alta_inicio") || "";
   document.getElementById("cfg_alta_fim").value =
@@ -535,6 +537,10 @@ function salvarAlteracoes() {
     document.getElementById("cfg_alm").value,
   );
   localStorage.setItem(
+    "plaza_valor_kwh",
+    document.getElementById("cfg_kwh").value,
+  );
+  localStorage.setItem(
     "plaza_alta_inicio",
     document.getElementById("cfg_alta_inicio").value,
   );
@@ -624,6 +630,7 @@ function limparCacheSistema() {
       "plaza_tarifario",
       "plaza_festividade",
       "plaza_valor_almoco",
+      "plaza_valor_kwh",
       "plaza_total_uhs",
       "plaza_comodidades_mestre",
       "plaza_alta_inicio",
@@ -707,6 +714,7 @@ function exportarBackup() {
     t: categoriasAtuais,
     f: document.getElementById("cfg_fest").value,
     a: document.getElementById("cfg_alm").value,
+    k: document.getElementById("cfg_kwh").value,
     ai: document.getElementById("cfg_alta_inicio").value,
     af: document.getElementById("cfg_alta_fim").value,
     u: document.getElementById("cfg_total_uhs").value,
@@ -748,6 +756,7 @@ function importarBackup(event) {
       localStorage.setItem("plaza_tarifario", JSON.stringify(d.t));
       localStorage.setItem("plaza_festividade", d.f);
       localStorage.setItem("plaza_valor_almoco", d.a);
+      if (d.k) localStorage.setItem("plaza_valor_kwh", d.k);
       if (d.ai) localStorage.setItem("plaza_alta_inicio", d.ai);
       if (d.af) localStorage.setItem("plaza_alta_fim", d.af);
       localStorage.setItem("plaza_total_uhs", d.u);

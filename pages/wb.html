@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wallbox - Hotel Plaza</title>
+    <link rel="stylesheet" href="../styles/global.css" />
+    <link rel="stylesheet" href="../styles/wallbox.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="card-calculo">
+        <div class="header-controls">
+          <a href="../index.html" class="btn-voltar">🏠 Voltar ao Painel</a>
+        </div>
+        <h3>⚡ Calculadora Wallbox</h3>
+
+        <div class="info-tarifa">
+          <span>Tarifa Atual Configurada:</span>
+          <strong id="displayTarifa">R$ -- / kWh</strong>
+        </div>
+
+        <div class="input-area">
+          <div class="label-row">
+            <label for="consumo">Consumo Total (kWh)</label>
+            <button class="btn-help-link" onclick="abrirAjuda()">
+              ❓ Onde ver?
+            </button>
+          </div>
+          <input
+            type="number"
+            id="consumo"
+            placeholder="Ex: 15.5"
+            step="0.1"
+            oninput="calcular()"
+          />
+          <small>Insira o valor exibido no visor do carregador.</small>
+        </div>
+
+        <div class="input-area">
+          <label for="tempo">Tempo de Carga (Opcional)</label>
+          <input
+            type="text"
+            id="tempo"
+            placeholder="Ex: 02:45 (HH:MM)"
+            maxlength="5"
+          />
+          <small>Informe a duração do visor para calcular o início.</small>
+        </div>
+
+        <div class="resultado-area">
+          <span>Valor a Cobrar</span>
+          <div id="valorFinal">R$ 0,00</div>
+        </div>
+
+        <div class="acoes">
+          <button class="btn-whatsapp" onclick="copiarZap()">
+            📱 Copiar para WhatsApp
+          </button>
+          <button class="btn-limpar" onclick="limpar()">🧹 Limpar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Mensagens (Reutilizado do Global) -->
+    <div id="modalMsg">
+      <div class="modal-msg-content">
+        <span id="msgIcon" class="modal-msg-icon"></span>
+        <h3 id="msgTitle" style="margin: 0; color: #075e54"></h3>
+        <p id="msgText" style="color: #666; margin-top: 10px"></p>
+        <button class="btn-msg-ok" onclick="fecharModalMsg()">OK</button>
+      </div>
+    </div>
+
+    <!-- Modal de Ajuda com Imagem -->
+    <div id="modalAjuda" class="modal-overlay">
+      <div class="modal-content-ajuda">
+        <h3>📍 Onde encontrar o consumo?</h3>
+        <p>
+          Verifique no visor do Wallbox o número indicado em
+          <strong>kWh</strong>, conforme o destaque na imagem abaixo:
+        </p>
+        <p class="info-app">
+          Ou consulte pelo aplicativo <strong>Tuya Smart</strong>
+          <img src="../assets/img/tuya.jpeg" alt="App Tuya" class="icon-tuya" />
+        </p>
+        <img
+          src="../assets/img/kWh.jpeg"
+          alt="Exemplo Visor Wallbox"
+          class="img-ajuda"
+        />
+        <button class="btn-msg-ok" onclick="fecharAjuda()">Entendi</button>
+      </div>
+    </div>
+
+    <script src="../scripts/wallbox.js"></script>
+    <script>
+      function fecharModalMsg() {
+        document.getElementById("modalMsg").style.display = "none";
+      }
+      function showMsg(titulo, texto) {
+        document.getElementById("msgTitle").innerText = titulo;
+        document.getElementById("msgText").innerText = texto;
+        document.getElementById("modalMsg").style.display = "block";
+      }
+    </script>
+  </body>
+</html>

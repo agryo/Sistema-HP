@@ -31,6 +31,10 @@
           <h3>📊 Tabela de Preços</h3>
           <p>PDF por Temporada</p>
         </a>
+        <a href="pages/wb.html" class="card-link">
+          <h3>⚡ Wallbox</h3>
+          <p>Cálculo de Recarga</p>
+        </a>
       </div>
 
       <button class="btn-config-master" onclick="verificarAcessoConfig()">
@@ -144,6 +148,13 @@
           >
             <label>Valor Almoço (R$):</label>
             <input type="number" id="cfg_alm" step="0,01" />
+          </div>
+          <div
+            class="input-group"
+            style="flex: 0 0 110px; min-width: 105px; margin-left: 8px"
+          >
+            <label>Valor kWh (R$):</label>
+            <input type="number" id="cfg_kwh" step="0.01" placeholder="1.80" />
           </div>
 
           <div class="input-group" style="flex: 0 0 110px; min-width: 105px">
@@ -305,7 +316,7 @@
               >
               <span class="help-icon" tabindex="0"
                 >ℹ️
-              <span class="help-tooltip help-tooltip-right"
+                <span class="help-tooltip help-tooltip-right"
                   >Liga/Desliga todo o sistema de promoções nos
                   orçamentos.</span
                 >

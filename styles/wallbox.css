@@ -1,0 +1,213 @@
+.header-controls {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.btn-voltar {
+  background: #666;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+h3 {
+  color: #075e54;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 25px;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.card-calculo {
+  background: white;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  max-width: 500px;
+  margin: 0 auto;
+  text-align: center;
+  border: 1px solid #e0e0e0;
+  border-top: 5px solid #075e54;
+  position: relative;
+}
+
+.info-tarifa {
+  background: #e0f2f1;
+  color: #00695c;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  display: inline-block;
+  font-size: 14px;
+}
+
+.input-area {
+  margin-bottom: 30px;
+  text-align: left;
+}
+
+.label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.input-area label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0;
+  color: #333;
+}
+
+.btn-help-link {
+  background: #e0f2f1;
+  border: 1px solid #075e54;
+  color: #075e54;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+  padding: 4px 12px;
+  border-radius: 15px;
+  transition: 0.2s;
+}
+
+.btn-help-link:hover {
+  background: #075e54;
+  color: white;
+}
+
+.input-area input {
+  width: 100%;
+  padding: 15px;
+  font-size: 22px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  text-align: center;
+  color: #075e54;
+  font-weight: bold;
+}
+
+.input-area input:focus {
+  border-color: #25d366;
+  outline: none;
+}
+
+.resultado-area {
+  margin-bottom: 30px;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 10px;
+}
+
+.resultado-area span {
+  display: block;
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+#valorFinal {
+  font-size: 42px;
+  font-weight: 800;
+  color: #333;
+}
+
+#valorFinal.destaque {
+  color: #25d366;
+}
+
+.acoes {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.btn-whatsapp {
+  background: #25d366;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  flex: 2;
+  font-size: 16px;
+  transition: 0.2s;
+}
+
+.btn-whatsapp:hover {
+  background: #128c7e;
+}
+
+.btn-limpar {
+  background: #f0f0f0;
+  color: #333;
+  border: none;
+  padding: 12px 15px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  flex: 1;
+}
+
+.btn-limpar:hover {
+  background: #e0e0e0;
+}
+
+/* Modal de Ajuda */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 2000;
+  backdrop-filter: blur(2px);
+}
+
+.modal-content-ajuda {
+  background: white;
+  width: 90%;
+  max-width: 420px;
+  margin: 1% auto;
+  padding: 20px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.img-ajuda {
+  width: 100%;
+  border-radius: 8px;
+  margin: 15px 0;
+  border: 2px solid #eee;
+}
+
+.info-app {
+  margin: 5px 0 15px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.icon-tuya {
+  width: 40px;
+  height: 40px;
+  vertical-align: middle;
+  border-radius: 5px;
+  margin-left: 5px;
+}
