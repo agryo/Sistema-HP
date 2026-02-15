@@ -48,6 +48,35 @@
           <small>Informe a duração do visor para calcular o início.</small>
         </div>
 
+        <div
+          id="detalhesCalculo"
+          style="
+            display: none;
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            font-size: 14px;
+          "
+        >
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              margin-bottom: 5px;
+            "
+          >
+            <span>Energia:</span>
+            <strong id="valEnergia">R$ 0,00</strong>
+          </div>
+          <div
+            style="display: flex; justify-content: space-between; color: #666"
+          >
+            <span id="labelImpostos">Impostos (+10%):</span>
+            <strong id="valImpostos">R$ 0,00</strong>
+          </div>
+        </div>
+
         <div class="resultado-area">
           <span>Valor a Cobrar</span>
           <div id="valorFinal">R$ 0,00</div>

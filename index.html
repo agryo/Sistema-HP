@@ -157,6 +157,16 @@
             <input type="number" id="cfg_kwh" step="0.01" placeholder="1.80" />
           </div>
 
+          <div class="input-group">
+            <label>Imposto Wallbox (%)</label>
+            <input
+              type="number"
+              id="cfg_imposto_wb"
+              step="1"
+              placeholder="Ex: 10"
+            />
+          </div>
+
           <div class="input-group" style="flex: 0 0 110px; min-width: 105px">
             <label>Qtd. Total de UHs:</label
             ><input
@@ -165,7 +175,7 @@
               oninput="renderizarChecksNumbers()"
             />
           </div>
-          <div class="input-group" style="flex: 0 0 565px; margin-right: 8px">
+          <div class="input-group" style="flex: 0 0 430px; margin-right: 8px">
             <label>Comodidades Globais (Separe por vírgula):</label>
             <input
               type="text"
