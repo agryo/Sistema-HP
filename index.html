@@ -147,14 +147,23 @@
             style="flex: 0 0 110px; min-width: 105px; margin-left: 8px"
           >
             <label>Valor Almoço (R$):</label>
-            <input type="number" id="cfg_alm" step="0,01" />
+            <input
+              type="text"
+              id="cfg_alm"
+              onchange="this.value = formatMoney(parseMoney(this.value))"
+            />
           </div>
           <div
             class="input-group"
             style="flex: 0 0 110px; min-width: 105px; margin-left: 8px"
           >
             <label>Valor kWh (R$):</label>
-            <input type="number" id="cfg_kwh" step="0.01" placeholder="1.80" />
+            <input
+              type="text"
+              id="cfg_kwh"
+              placeholder="1,80"
+              onchange="this.value = formatMoney(parseMoney(this.value))"
+            />
           </div>
 
           <div class="input-group" style="flex: 0 0 110px; min-width: 105px">

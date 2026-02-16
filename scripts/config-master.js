@@ -202,6 +202,25 @@ let comodidadesGlobais = [
 let idUHSelecionada = null;
 let ultimoBlobUrlExport = null;
 
+// HELPERS DE FORMATAÇÃO (MOEDA BRASIL)
+function formatMoney(val) {
+  let n = parseFloat(val);
+  if (isNaN(n)) n = 0;
+  return n.toLocaleString("pt-BR", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+}
+
+function parseMoney(val) {
+  if (typeof val === "number") return val;
+  if (!val) return 0;
+  // Remove ponto de milhar e troca vírgula por ponto decimal
+  let clean = val.toString().replace(/\./g, "").replace(",", ".");
+  let n = parseFloat(clean);
+  return isNaN(n) ? 0 : n;
+}
+
 function abrirFileImport() {
   const f = document.getElementById("fileIn");
   if (!f) return;
@@ -271,10 +290,12 @@ function abrirModal() {
   carregarDadosBase();
   document.getElementById("cfg_fest").value =
     localStorage.getItem("plaza_festividade") || "Carnaval 2026";
-  document.getElementById("cfg_alm").value =
-    localStorage.getItem("plaza_valor_almoco") || 30.0;
-  document.getElementById("cfg_kwh").value =
-    localStorage.getItem("plaza_valor_kwh") || 1.8;
+  document.getElementById("cfg_alm").value = formatMoney(
+    localStorage.getItem("plaza_valor_almoco") || 30.0,
+  );
+  document.getElementById("cfg_kwh").value = formatMoney(
+    localStorage.getItem("plaza_valor_kwh") || 1.8,
+  );
   document.getElementById("cfg_alta_inicio").value =
     localStorage.getItem("plaza_alta_inicio") || "";
   document.getElementById("cfg_alta_fim").value =
@@ -347,10 +368,10 @@ function renderTabela() {
       (c, i) => `
         <tr id="linha_${i}" class="clickable-row" onclick="selecionarLinha(${i})">
             <td><input type="text" class="input-nome-uh" value="${c.nome}" oninput="syncNome(${i}, this.value)"></td>
-            <td><input type="number" class="input-preco" value="${c.alta[0]}" id="a0_${i}"></td>
-            <td><input type="number" class="input-preco" value="${c.alta[1]}" id="a1_${i}"></td>
-            <td><input type="number" class="input-preco" value="${c.baixa[0]}" id="b0_${i}"></td>
-            <td><input type="number" class="input-preco" value="${c.baixa[1]}" id="b1_${i}"></td>
+            <td><input type="text" class="input-preco" value="${formatMoney(c.alta[0])}" id="a0_${i}" onchange="this.value = formatMoney(parseMoney(this.value))"></td>
+            <td><input type="text" class="input-preco" value="${formatMoney(c.alta[1])}" id="a1_${i}" onchange="this.value = formatMoney(parseMoney(this.value))"></td>
+            <td><input type="text" class="input-preco" value="${formatMoney(c.baixa[0])}" id="b0_${i}" onchange="this.value = formatMoney(parseMoney(this.value))"></td>
+            <td><input type="text" class="input-preco" value="${formatMoney(c.baixa[1])}" id="b1_${i}" onchange="this.value = formatMoney(parseMoney(this.value))"></td>
             <td><button class="btn-delete" onclick="abrirConfirmExcluir(${i}, event)">🗑️</button></td>
         </tr>
     `,
@@ -521,10 +542,10 @@ function salvarAlteracoes() {
     const a1 = document.getElementById(`a1_${i}`);
     const b0 = document.getElementById(`b0_${i}`);
     const b1 = document.getElementById(`b1_${i}`);
-    c.alta[0] = a0 ? parseFloat(a0.value) || 0 : c.alta[0];
-    c.alta[1] = a1 ? parseFloat(a1.value) || 0 : c.alta[1];
-    c.baixa[0] = b0 ? parseFloat(b0.value) || 0 : c.baixa[0];
-    c.baixa[1] = b1 ? parseFloat(b1.value) || 0 : c.baixa[1];
+    c.alta[0] = a0 ? parseMoney(a0.value) : c.alta[0];
+    c.alta[1] = a1 ? parseMoney(a1.value) : c.alta[1];
+    c.baixa[0] = b0 ? parseMoney(b0.value) : c.baixa[0];
+    c.baixa[1] = b1 ? parseMoney(b1.value) : c.baixa[1];
   });
 
   localStorage.setItem("plaza_tarifario", JSON.stringify(categoriasAtuais));
@@ -534,11 +555,11 @@ function salvarAlteracoes() {
   );
   localStorage.setItem(
     "plaza_valor_almoco",
-    document.getElementById("cfg_alm").value,
+    parseMoney(document.getElementById("cfg_alm").value),
   );
   localStorage.setItem(
     "plaza_valor_kwh",
-    document.getElementById("cfg_kwh").value,
+    parseMoney(document.getElementById("cfg_kwh").value),
   );
   localStorage.setItem(
     "plaza_alta_inicio",
@@ -668,10 +689,10 @@ function exportarBackup() {
     const a1 = document.getElementById(`a1_${i}`);
     const b0 = document.getElementById(`b0_${i}`);
     const b1 = document.getElementById(`b1_${i}`);
-    c.alta[0] = a0 ? parseFloat(a0.value) || 0 : c.alta[0];
-    c.alta[1] = a1 ? parseFloat(a1.value) || 0 : c.alta[1];
-    c.baixa[0] = b0 ? parseFloat(b0.value) || 0 : c.baixa[0];
-    c.baixa[1] = b1 ? parseFloat(b1.value) || 0 : c.baixa[1];
+    c.alta[0] = a0 ? parseMoney(a0.value) : c.alta[0];
+    c.alta[1] = a1 ? parseMoney(a1.value) : c.alta[1];
+    c.baixa[0] = b0 ? parseMoney(b0.value) : c.baixa[0];
+    c.baixa[1] = b1 ? parseMoney(b1.value) : c.baixa[1];
   });
 
   // 2. Captura horários e checkboxes atuais
@@ -713,8 +734,8 @@ function exportarBackup() {
     cabecalho: "BACKUP_CONFIG_PLAZA",
     t: categoriasAtuais,
     f: document.getElementById("cfg_fest").value,
-    a: document.getElementById("cfg_alm").value,
-    k: document.getElementById("cfg_kwh").value,
+    a: parseMoney(document.getElementById("cfg_alm").value),
+    k: parseMoney(document.getElementById("cfg_kwh").value),
     ai: document.getElementById("cfg_alta_inicio").value,
     af: document.getElementById("cfg_alta_fim").value,
     u: document.getElementById("cfg_total_uhs").value,
