@@ -112,7 +112,7 @@ function renderizarEdicao() {
 			<div style="flex:2.5"><label>Acomodação</label><select onchange="editar(${item.id}, 'catId', this.value)" style="width:100%">
 				${categorias.map((c) => `<option value="${c.id}" ${item.catId == c.id ? "selected" : ""}>${c.nome}</option>`).join("")}
 			</select></div>
-			<div style="flex:1.5"><label>Função / Equipe</label><input type="text" value="${item.cargo}" oninput="editar(${item.id}, 'cargo', this.value)" style="width:100%"></div>
+			<div style="flex:3.5"><label>Função / Equipe</label><input type="text" value="${item.cargo}" oninput="editar(${item.id}, 'cargo', this.value)" style="width:100%"></div>
 			<div style="flex:1.2; display:flex; gap:10px; padding-top:18px;">
 				<label style="font-size:11px; display:flex; align-items:center;"><input type="checkbox" ${item.cafe ? "checked" : ""} onchange="editar(${item.id}, 'cafe', this.checked)"> Café</label>
 				<label style="font-size:11px; display:flex; align-items:center;"><input type="checkbox" ${item.almoco ? "checked" : ""} onchange="editar(${item.id}, 'almoco', this.checked)"> Almoço</label>
