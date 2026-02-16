@@ -1,14 +1,9 @@
 let tarifaKwh = 1.8;
-let impostoTaxa = 0.1; // 10% padrão
 
 window.onload = () => {
   const salvo = localStorage.getItem("plaza_valor_kwh");
   if (salvo) {
     tarifaKwh = parseFloat(salvo);
-  }
-  const salvoImp = localStorage.getItem("plaza_imposto_wb");
-  if (salvoImp) {
-    impostoTaxa = parseFloat(salvoImp) / 100;
   }
   document.getElementById("displayTarifa").innerText =
     tarifaKwh.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }) +
@@ -20,7 +15,6 @@ function calcular() {
   const valDisplay = document.getElementById("valorFinal");
   const divDetalhes = document.getElementById("detalhesCalculo");
   const valEnergia = document.getElementById("valEnergia");
-  const valImpostos = document.getElementById("valImpostos");
 
   if (!input || input <= 0) {
     valDisplay.innerText = "R$ 0,00";
@@ -31,8 +25,7 @@ function calcular() {
 
   const consumo = parseFloat(input);
   const subtotal = consumo * tarifaKwh;
-  const impostos = subtotal * impostoTaxa;
-  const total = subtotal + impostos;
+  const total = subtotal;
 
   if (divDetalhes) divDetalhes.style.display = "block";
   if (valEnergia)
@@ -40,16 +33,6 @@ function calcular() {
       style: "currency",
       currency: "BRL",
     });
-  if (valImpostos)
-    valImpostos.innerText = impostos.toLocaleString("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    });
-
-  const labelImp = document.getElementById("labelImpostos");
-  if (labelImp) {
-    labelImp.innerText = `Impostos (+${(impostoTaxa * 100).toLocaleString("pt-BR")}%):`;
-  }
 
   valDisplay.innerText = total.toLocaleString("pt-BR", {
     style: "currency",
@@ -76,14 +59,9 @@ function copiarZap() {
 
   const consumo = parseFloat(input);
   const subtotal = consumo * tarifaKwh;
-  const impostos = subtotal * impostoTaxa;
-  const total = subtotal + impostos;
+  const total = subtotal;
 
   const subtotalFmt = subtotal.toLocaleString("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  });
-  const impostosFmt = impostos.toLocaleString("pt-BR", {
     style: "currency",
     currency: "BRL",
   });
@@ -118,7 +96,7 @@ function copiarZap() {
     }
   }
 
-  const texto = `🔋 *Recarga Veículo Elétrico - Hotel Plaza*\n\n📅 *Data:* ${dataFim} às ${horaFim}\n\n⚡ *Consumo:* ${consumo} kWh\n💲 *Tarifa Base:* ${tarifaFmt}/kWh\n📊 *Energia:* ${subtotalFmt}\n🏛️ *Impostos (${(impostoTaxa * 100).toLocaleString("pt-BR")}%):* ${impostosFmt}${infoTempo}\n\n💰 *TOTAL A PAGAR: ${totalFmt}*`;
+  const texto = `🔋 *Recarga Veículo Elétrico - Hotel Plaza*\n\n📅 *Data:* ${dataFim} às ${horaFim}\n\n⚡ *Consumo:* ${consumo} kWh\n💲 *Tarifa Base:* ${tarifaFmt}/kWh\n📊 *Energia:* ${subtotalFmt}${infoTempo}\n\n💰 *TOTAL A PAGAR: ${totalFmt}*`;
 
   navigator.clipboard.writeText(texto).then(() => {
     document.getElementById("msgIcon").innerText = "✅";

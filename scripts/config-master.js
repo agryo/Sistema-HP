@@ -275,9 +275,6 @@ function abrirModal() {
     localStorage.getItem("plaza_valor_almoco") || 30.0;
   document.getElementById("cfg_kwh").value =
     localStorage.getItem("plaza_valor_kwh") || 1.8;
-  if (document.getElementById("cfg_imposto_wb"))
-    document.getElementById("cfg_imposto_wb").value =
-      localStorage.getItem("plaza_imposto_wb") || 10;
   document.getElementById("cfg_alta_inicio").value =
     localStorage.getItem("plaza_alta_inicio") || "";
   document.getElementById("cfg_alta_fim").value =
@@ -543,12 +540,6 @@ function salvarAlteracoes() {
     "plaza_valor_kwh",
     document.getElementById("cfg_kwh").value,
   );
-  if (document.getElementById("cfg_imposto_wb")) {
-    localStorage.setItem(
-      "plaza_imposto_wb",
-      document.getElementById("cfg_imposto_wb").value,
-    );
-  }
   localStorage.setItem(
     "plaza_alta_inicio",
     document.getElementById("cfg_alta_inicio").value,
@@ -640,7 +631,6 @@ function limparCacheSistema() {
       "plaza_festividade",
       "plaza_valor_almoco",
       "plaza_valor_kwh",
-      "plaza_imposto_wb",
       "plaza_total_uhs",
       "plaza_comodidades_mestre",
       "plaza_alta_inicio",
@@ -725,9 +715,6 @@ function exportarBackup() {
     f: document.getElementById("cfg_fest").value,
     a: document.getElementById("cfg_alm").value,
     k: document.getElementById("cfg_kwh").value,
-    iw: document.getElementById("cfg_imposto_wb")
-      ? document.getElementById("cfg_imposto_wb").value
-      : "10",
     ai: document.getElementById("cfg_alta_inicio").value,
     af: document.getElementById("cfg_alta_fim").value,
     u: document.getElementById("cfg_total_uhs").value,
@@ -770,7 +757,6 @@ function importarBackup(event) {
       localStorage.setItem("plaza_festividade", d.f);
       localStorage.setItem("plaza_valor_almoco", d.a);
       if (d.k) localStorage.setItem("plaza_valor_kwh", d.k);
-      if (d.iw) localStorage.setItem("plaza_imposto_wb", d.iw);
       if (d.ai) localStorage.setItem("plaza_alta_inicio", d.ai);
       if (d.af) localStorage.setItem("plaza_alta_fim", d.af);
       localStorage.setItem("plaza_total_uhs", d.u);
