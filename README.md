@@ -4,7 +4,7 @@ O **Sistema-HP** é uma suíte de ferramentas web desenvolvida para agilizar o s
 
 ## 🚀 Módulos e Funcionalidades
 
-### ⚙️ Painel Master (Configurações)
+### ⚙️ Configurações Gerais
 
 - **Gestão de Tarifário:** Cadastro completo de categorias de acomodação (Standard, Luxo, Suítes, etc.) com preços diferenciados para **Alta** e **Baixa** temporada.
 - **Motor de Promoções:** Configuração de descontos automáticos (porcentagem) baseados no número mínimo de diárias, com regras de aplicação (apenas alta, mensagem na baixa, etc.).
@@ -30,6 +30,12 @@ O **Sistema-HP** é uma suíte de ferramentas web desenvolvida para agilizar o s
 - **Comparativo:** Gera uma lista com múltiplas opções de quartos selecionados para oferecer ao cliente.
 - **Filtros Inteligentes:** Separação visual entre opções para Solteiros e Casais/Famílias.
 - **Previsão Completa:** Exibe valores totais com e sem café, além de aplicar regras de promoção quando elegível.
+
+### 📊 Tabela de Preços
+
+- **Visualização Clara:** Gera tabelas de preços formatadas para impressão ou envio em PDF.
+- **Separação por Temporada:** Alterna facilmente entre visualização de Alta e Baixa temporada.
+- **Agrupamento Inteligente:** Agrupa automaticamente UHs similares (mesmo preço e capacidade) para simplificar a leitura.
 
 ### 🔌 Calculadora Wallbox
 
