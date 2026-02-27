@@ -8,7 +8,7 @@ O **Sistema-HP** é uma suíte de ferramentas web desenvolvida para agilizar o s
 
 - **Gestão de Tarifário:** Cadastro completo de categorias de acomodação (Standard, Luxo, Suítes, etc.) com preços diferenciados para **Alta** e **Baixa** temporada.
 - **Motor de Promoções:** Configuração de descontos automáticos (porcentagem) baseados no número mínimo de diárias, com regras de aplicação (apenas alta, mensagem na baixa, etc.).
-- **Parâmetros Globais:** Definição de horários de refeições (Café, Almoço, Jantar), valor do almoço extra e **custo do kWh**.
+- **Parâmetros Globais:** Definição de horários de refeições (Café, Almoço, Lanche da tarde e Jantar), valor do almoço/lanche extra e **custo do kWh**.
 - **Backup e Segurança:** Exportação/Importação das configurações via arquivo JSON e proteção de acesso ao painel via senha.
 
 ### ⚡ Orçamento Rápido (WhatsApp)
@@ -21,7 +21,7 @@ O **Sistema-HP** é uma suíte de ferramentas web desenvolvida para agilizar o s
 ### 📄 Orçamento Oficial
 
 - **Propostas Detalhadas:** Ideal para bandas, empresas e grandes grupos. Permite adicionar múltiplos itens, quantidades e definir funções (ex: Staff, Produção).
-- **Cálculo de Alimentação:** Inclusão opcional de almoço/jantar no cálculo da diária.
+- **Cálculo de Alimentação:** Inclusão opcional de almoço, janta e lanche no cálculo da diária; refeições são cobradas apenas se o hóspede estiver dentro do horário configurado e considerando horas de chegada/saída.
 - **Persistência:** Salve e carregue orçamentos complexos através de arquivos JSON assinados e validados pelo sistema.
 - **Impressão:** Layout otimizado para gerar PDFs ou imprimir a proposta formal.
 

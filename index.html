@@ -157,6 +157,28 @@
             class="input-group"
             style="flex: 0 0 110px; min-width: 105px; margin-left: 8px"
           >
+            <label>Valor Janta (R$):</label>
+            <input
+              type="text"
+              id="cfg_janta"
+              onchange="this.value = formatMoney(parseMoney(this.value))"
+            />
+          </div>
+          <div
+            class="input-group"
+            style="flex: 0 0 110px; min-width: 105px; margin-left: 8px"
+          >
+            <label>Valor Lanche (R$):</label>
+            <input
+              type="text"
+              id="cfg_lanche"
+              onchange="this.value = formatMoney(parseMoney(this.value))"
+            />
+          </div>
+          <div
+            class="input-group"
+            style="flex: 0 0 110px; min-width: 105px; margin-left: 8px"
+          >
             <label>Valor kWh (R$):</label>
             <input
               type="text"
@@ -263,6 +285,32 @@
                 >
                 <input type="time" id="cfg_hor_almoco_start" />
                 <input type="time" id="cfg_hor_almoco_end" />
+              </div>
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 6px;
+                  min-width: 120px;
+                "
+              >
+                <input
+                  type="checkbox"
+                  id="cfg_check_lanche"
+                  style="width: auto; margin-right: 5px"
+                  title="Exibir nas mensagens"
+                />
+                <small
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #075e54;
+                    margin-right: 6px;
+                  "
+                  >Lanche da Tarde:</small
+                >
+                <input type="time" id="cfg_hor_lanche_start" />
+                <input type="time" id="cfg_hor_lanche_end" />
               </div>
               <div
                 style="

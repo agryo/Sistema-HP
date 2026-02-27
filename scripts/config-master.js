@@ -186,6 +186,7 @@ const categoriasBase = [
 const horariosBase = {
   cafe: ["07:00", "09:00", true],
   almoco: ["11:00", "13:00", true],
+  lanche: ["15:00", "17:00", true], // lanche da tarde
   janta: ["18:00", "20:00", true],
 };
 
@@ -293,6 +294,12 @@ function abrirModal() {
   document.getElementById("cfg_alm").value = formatMoney(
     localStorage.getItem("plaza_valor_almoco") || 30.0,
   );
+  document.getElementById("cfg_janta").value = formatMoney(
+    localStorage.getItem("plaza_valor_janta") || 25.0,
+  );
+  document.getElementById("cfg_lanche").value = formatMoney(
+    localStorage.getItem("plaza_valor_lanche") || 15.0,
+  );
   document.getElementById("cfg_kwh").value = formatMoney(
     localStorage.getItem("plaza_valor_kwh") || 1.8,
   );
@@ -323,6 +330,12 @@ function abrirModal() {
       horariosRefeicoes.almoco[1] || "13:00";
     document.getElementById("cfg_check_almoco").checked =
       horariosRefeicoes.almoco[2] !== false;
+    document.getElementById("cfg_hor_lanche_start").value =
+      horariosRefeicoes.lanche[0] || "15:00";
+    document.getElementById("cfg_hor_lanche_end").value =
+      horariosRefeicoes.lanche[1] || "17:00";
+    document.getElementById("cfg_check_lanche").checked =
+      horariosRefeicoes.lanche[2] !== false;
     document.getElementById("cfg_hor_janta_start").value =
       horariosRefeicoes.janta[0] || "18:00";
     document.getElementById("cfg_hor_janta_end").value =
@@ -558,6 +571,14 @@ function salvarAlteracoes() {
     parseMoney(document.getElementById("cfg_alm").value),
   );
   localStorage.setItem(
+    "plaza_valor_janta",
+    parseMoney(document.getElementById("cfg_janta").value),
+  );
+  localStorage.setItem(
+    "plaza_valor_lanche",
+    parseMoney(document.getElementById("cfg_lanche").value),
+  );
+  localStorage.setItem(
     "plaza_valor_kwh",
     parseMoney(document.getElementById("cfg_kwh").value),
   );
@@ -616,6 +637,11 @@ function salvarAlteracoes() {
         document.getElementById("cfg_hor_almoco_start").value,
         document.getElementById("cfg_hor_almoco_end").value,
         document.getElementById("cfg_check_almoco").checked,
+      ],
+      lanche: [
+        document.getElementById("cfg_hor_lanche_start").value,
+        document.getElementById("cfg_hor_lanche_end").value,
+        document.getElementById("cfg_check_lanche").checked,
       ],
       janta: [
         document.getElementById("cfg_hor_janta_start").value,

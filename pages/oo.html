@@ -62,19 +62,27 @@
         </div>
         <div style="flex: 1">
           <label>Entrada:</label
+          ><input type="date" id="dataEntrada" style="width: 100%" />
+        </div>
+        <div style="flex: 1">
+          <label>Hora Prev. Entrada:</label
           ><input
-            type="date"
-            id="dataEntrada"
-            onchange="atualizarDoc()"
+            type="time"
+            id="horaEntradaPrev"
+            value="14:00"
             style="width: 100%"
           />
         </div>
         <div style="flex: 1">
           <label>Saída:</label
+          ><input type="date" id="dataSaida" style="width: 100%" />
+        </div>
+        <div style="flex: 1">
+          <label>Hora Prev. Saída:</label
           ><input
-            type="date"
-            id="dataSaida"
-            onchange="atualizarDoc()"
+            type="time"
+            id="horaSaidaPrev"
+            value="11:00"
             style="width: 100%"
           />
         </div>
@@ -86,17 +94,33 @@
       </button>
 
       <div class="batch-controls">
-        <button class="btn btn-bulk" onclick="marcarTodos('cafe', true)">
+        <button
+          id="btnBulkCafe"
+          class="btn btn-bulk"
+          onclick="toggleAll('cafe')"
+        >
           ☕ Todos com Café
         </button>
-        <button class="btn btn-bulk" onclick="marcarTodos('cafe', false)">
-          ☕ Todos sem Café
-        </button>
-        <button class="btn btn-bulk" onclick="marcarTodos('almoco', true)">
+        <button
+          id="btnBulkAlmoco"
+          class="btn btn-bulk"
+          onclick="toggleAll('almoco')"
+        >
           🍽️ Todos com Almoço
         </button>
-        <button class="btn btn-bulk" onclick="marcarTodos('almoco', false)">
-          🍽️ Todos sem Almoço
+        <button
+          id="btnBulkJanta"
+          class="btn btn-bulk"
+          onclick="toggleAll('janta')"
+        >
+          🍛 Todos com Janta
+        </button>
+        <button
+          id="btnBulkLanche"
+          class="btn btn-bulk"
+          onclick="toggleAll('lanche')"
+        >
+          🥪 Todos com Lanche
         </button>
       </div>
 
@@ -138,13 +162,14 @@
             <th>Acomodação</th>
             <th style="width: 150px">Serviços</th>
             <th>Vlr. Diária</th>
+            <th>Diárias</th>
             <th>Total</th>
           </tr>
         </thead>
         <tbody id="tabelaCorpo"></tbody>
         <tfoot>
           <tr class="total-row">
-            <td colspan="4" style="text-align: right">VALOR TOTAL:</td>
+            <td colspan="5" style="text-align: right">VALOR TOTAL:</td>
             <td id="totalGeral">R$ 0,00</td>
           </tr>
         </tfoot>
@@ -152,12 +177,15 @@
 
       <div class="check-info-box">
         <span
-          >📥 <strong>Check-in:</strong>
-          <span id="checkinData">--</span> (14h)</span
+          >📥 <strong>Check-in:</strong> <span id="checkinData">--</span> (<span
+            id="checkinHora"
+            >--</span
+          >)</span
         >
         <span
           >📤 <strong>Check-out:</strong>
-          <span id="checkoutData">--</span> (11h)</span
+          <span id="checkoutData">--</span> (<span id="checkoutHora">--</span
+          >)</span
         >
       </div>
 
@@ -165,10 +193,20 @@
         <strong>Observações:</strong>
         <ul style="margin: 3px 0; padding-left: 15px">
           <li>Incluso Wi-Fi e Estacionamento monitorado.</li>
-          <li>Café da manhã: 07h às 09h.</li>
+          <li>Café da manhã: <span id="obsHorCafe">--</span>.</li>
           <li>
-            Almoço opcional: <span id="obsValorAlmoco">R$ 30,00</span> por
-            pessoa (Buffet Livre).
+            Almoço opcional: <span id="obsValorAlmoco">--</span> por pessoa
+            (<span id="obsHorAlmoco">--</span>).
+          </li>
+          <li>
+            Lanche à tarde opcional: <span id="obsValorLanche">--</span> por
+            pessoa (<span id="obsHorLanche">--</span>).
+          </li>
+          <li>
+            Janta opcional: <span id="obsValorJanta">--</span> por pessoa (<span
+              id="obsHorJanta"
+              >--</span
+            >).
           </li>
           <li>Proposta válida por 48 horas, sujeita a disponibilidade.</li>
         </ul>
