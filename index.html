@@ -138,13 +138,13 @@
         </div>
 
         <div class="config-topo" style="flex-wrap: nowrap; align-items: center">
-          <div class="input-group" style="flex: 0 0 240px; min-width: 220px">
+          <div class="input-group">
             <label>Nome da Festividade (Orçamento Rápido):</label>
             <input type="text" id="cfg_fest" />
           </div>
           <div
-            class="input-group"
-            style="flex: 0 0 110px; min-width: 105px; margin-left: 8px"
+            class="input-group multi"
+            style="flex: 0 0 110px; min-width: 105px"
           >
             <label>Valor Almoço (R$):</label>
             <input
@@ -152,12 +152,7 @@
               id="cfg_alm"
               onchange="this.value = formatMoney(parseMoney(this.value))"
             />
-          </div>
-          <div
-            class="input-group"
-            style="flex: 0 0 110px; min-width: 105px; margin-left: 8px"
-          >
-            <label>Valor Janta (R$):</label>
+            <label style="margin-top: 4px">Valor Janta (R$):</label>
             <input
               type="text"
               id="cfg_janta"
@@ -165,8 +160,8 @@
             />
           </div>
           <div
-            class="input-group"
-            style="flex: 0 0 110px; min-width: 105px; margin-left: 8px"
+            class="input-group multi"
+            style="flex: 0 0 110px; min-width: 105px"
           >
             <label>Valor Lanche (R$):</label>
             <input
@@ -174,12 +169,7 @@
               id="cfg_lanche"
               onchange="this.value = formatMoney(parseMoney(this.value))"
             />
-          </div>
-          <div
-            class="input-group"
-            style="flex: 0 0 110px; min-width: 105px; margin-left: 8px"
-          >
-            <label>Valor kWh (R$):</label>
+            <label style="margin-top: 4px">Valor kWh (R$):</label>
             <input
               type="text"
               id="cfg_kwh"
@@ -188,7 +178,7 @@
             />
           </div>
 
-          <div class="input-group" style="flex: 0 0 110px; min-width: 105px">
+          <div class="input-group">
             <label>Qtd. Total de UHs:</label
             ><input
               type="number"
@@ -237,106 +227,106 @@
               <div
                 style="
                   display: flex;
-                  align-items: center;
-                  gap: 6px;
+                  flex-direction: column;
+                  align-items: flex-start;
+                  gap: 4px;
                   min-width: 120px;
                 "
               >
-                <input
-                  type="checkbox"
-                  id="cfg_check_cafe"
-                  style="width: auto; margin-right: 5px"
-                  title="Exibir nas mensagens"
-                />
-                <small
-                  style="
-                    font-size: 13px;
-                    font-weight: bold;
-                    color: #075e54;
-                    margin-right: 6px;
-                  "
-                  >Café:</small
-                >
-                <input type="time" id="cfg_hor_cafe_start" />
-                <input type="time" id="cfg_hor_cafe_end" />
+                <div style="display: flex; align-items: center; gap: 6px">
+                  <input
+                    type="checkbox"
+                    id="cfg_check_cafe"
+                    style="width: auto"
+                    title="Exibir nas mensagens"
+                  />
+                  <small
+                    style="font-size: 13px; font-weight: bold; color: #075e54"
+                    >Café:</small
+                  >
+                </div>
+                <div style="display: flex; gap: 4px">
+                  <input type="time" id="cfg_hor_cafe_start" />
+                  <input type="time" id="cfg_hor_cafe_end" />
+                </div>
               </div>
               <div
                 style="
                   display: flex;
-                  align-items: center;
-                  gap: 6px;
+                  flex-direction: column;
+                  align-items: flex-start;
+                  gap: 4px;
                   min-width: 150px;
                 "
               >
-                <input
-                  type="checkbox"
-                  id="cfg_check_almoco"
-                  style="width: auto; margin-right: 5px"
-                  title="Exibir nas mensagens"
-                />
-                <small
-                  style="
-                    font-size: 13px;
-                    font-weight: bold;
-                    color: #075e54;
-                    margin-right: 6px;
-                  "
-                  >Almoço:</small
-                >
-                <input type="time" id="cfg_hor_almoco_start" />
-                <input type="time" id="cfg_hor_almoco_end" />
+                <div style="display: flex; align-items: center; gap: 6px">
+                  <input
+                    type="checkbox"
+                    id="cfg_check_almoco"
+                    style="width: auto"
+                    title="Exibir nas mensagens"
+                  />
+                  <small
+                    style="font-size: 13px; font-weight: bold; color: #075e54"
+                    >Almoço:</small
+                  >
+                </div>
+                <div style="display: flex; gap: 4px">
+                  <input type="time" id="cfg_hor_almoco_start" />
+                  <input type="time" id="cfg_hor_almoco_end" />
+                </div>
               </div>
               <div
                 style="
                   display: flex;
-                  align-items: center;
-                  gap: 6px;
+                  flex-direction: column;
+                  align-items: flex-start;
+                  gap: 4px;
                   min-width: 120px;
                 "
               >
-                <input
-                  type="checkbox"
-                  id="cfg_check_lanche"
-                  style="width: auto; margin-right: 5px"
-                  title="Exibir nas mensagens"
-                />
-                <small
-                  style="
-                    font-size: 13px;
-                    font-weight: bold;
-                    color: #075e54;
-                    margin-right: 6px;
-                  "
-                  >Lanche da Tarde:</small
-                >
-                <input type="time" id="cfg_hor_lanche_start" />
-                <input type="time" id="cfg_hor_lanche_end" />
+                <div style="display: flex; align-items: center; gap: 6px">
+                  <input
+                    type="checkbox"
+                    id="cfg_check_lanche"
+                    style="width: auto"
+                    title="Exibir nas mensagens"
+                  />
+                  <small
+                    style="font-size: 13px; font-weight: bold; color: #075e54"
+                    >Lanche da Tarde:</small
+                  >
+                </div>
+                <div style="display: flex; gap: 4px">
+                  <input type="time" id="cfg_hor_lanche_start" />
+                  <input type="time" id="cfg_hor_lanche_end" />
+                </div>
               </div>
               <div
                 style="
                   display: flex;
-                  align-items: center;
-                  gap: 6px;
+                  flex-direction: column;
+                  align-items: flex-start;
+                  gap: 4px;
                   min-width: 120px;
                 "
               >
-                <input
-                  type="checkbox"
-                  id="cfg_check_janta"
-                  style="width: auto; margin-right: 5px"
-                  title="Exibir nas mensagens"
-                />
-                <small
-                  style="
-                    font-size: 13px;
-                    font-weight: bold;
-                    color: #075e54;
-                    margin-right: 6px;
-                  "
-                  >Lanche à Noite:</small
-                >
-                <input type="time" id="cfg_hor_janta_start" />
-                <input type="time" id="cfg_hor_janta_end" />
+                <div style="display: flex; align-items: center; gap: 6px">
+                  <input
+                    type="checkbox"
+                    id="cfg_check_janta"
+                    style="width: auto"
+                    title="Exibir nas mensagens"
+                  />
+                  <small
+                    style="font-size: 13px; font-weight: bold; color: #075e54"
+                    >Lanche à Noite:</small
+                  >
+                </div>
+                <div style="display: flex; gap: 4px">
+                  <input type="time" id="cfg_hor_janta_start" />
+                  <input type="time" id="cfg_hor_janta_end" />
+                </div>
               </div>
             </div>
           </div>
