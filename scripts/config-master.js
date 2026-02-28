@@ -367,10 +367,31 @@ function abrirModal() {
     atualizarEstadoPromo(); // Atualiza o estado visual (disabled/enabled) ao abrir
   }
 
+  // ========== NOVOS CAMPOS DE TEXTO DO ORÇAMENTO ==========
+  document.getElementById("cfg_orc_titulo").value =
+    localStorage.getItem("plaza_orc_titulo") || "Orçamento de Hospedagem";
+  document.getElementById("cfg_orc_config_titulo").value =
+    localStorage.getItem("plaza_orc_config_titulo") ||
+    "1. Configuração de Acomodação e Valores";
+  document.getElementById("cfg_orc_config_descricao").value =
+    localStorage.getItem("plaza_orc_config_descricao") || "";
+  document.getElementById("cfg_orc_nota_refeicoes").value =
+    localStorage.getItem("plaza_orc_nota_refeicoes") || "";
+  document.getElementById("cfg_orc_cronograma").value =
+    localStorage.getItem("plaza_orc_cronograma") || "";
+  document.getElementById("cfg_orc_pagamento").value =
+    localStorage.getItem("plaza_orc_pagamento") || "";
+  document.getElementById("cfg_orc_observacoes").value =
+    localStorage.getItem("plaza_orc_observacoes") || "";
+  document.getElementById("cfg_orc_rodape").value =
+    localStorage.getItem("plaza_orc_rodape") ||
+    "Setor de Reservas - Hotel Plaza";
+  document.getElementById("cfg_orc_sinal_percentual").value =
+    localStorage.getItem("plaza_orc_sinal_percentual") || "50";
+  // ========================================================
+
   renderTabela();
   document.getElementById("modal").style.display = "block";
-
-  // Seleciona a primeira linha automaticamente ao abrir
   if (categoriasAtuais.length > 0) selecionarLinha(0);
 }
 
@@ -653,6 +674,45 @@ function salvarAlteracoes() {
     localStorage.setItem("plaza_horarios_refeicoes", JSON.stringify(h));
   } catch (e) {}
 
+  // ========== SALVA NOVOS CAMPOS DE TEXTO DO ORÇAMENTO ==========
+  localStorage.setItem(
+    "plaza_orc_titulo",
+    document.getElementById("cfg_orc_titulo").value,
+  );
+  localStorage.setItem(
+    "plaza_orc_config_titulo",
+    document.getElementById("cfg_orc_config_titulo").value,
+  );
+  localStorage.setItem(
+    "plaza_orc_config_descricao",
+    document.getElementById("cfg_orc_config_descricao").value,
+  );
+  localStorage.setItem(
+    "plaza_orc_nota_refeicoes",
+    document.getElementById("cfg_orc_nota_refeicoes").value,
+  );
+  localStorage.setItem(
+    "plaza_orc_cronograma",
+    document.getElementById("cfg_orc_cronograma").value,
+  );
+  localStorage.setItem(
+    "plaza_orc_pagamento",
+    document.getElementById("cfg_orc_pagamento").value,
+  );
+  localStorage.setItem(
+    "plaza_orc_observacoes",
+    document.getElementById("cfg_orc_observacoes").value,
+  );
+  localStorage.setItem(
+    "plaza_orc_rodape",
+    document.getElementById("cfg_orc_rodape").value,
+  );
+  localStorage.setItem(
+    "plaza_orc_sinal_percentual",
+    document.getElementById("cfg_orc_sinal_percentual").value,
+  );
+  // ===============================================================
+
   showMsg(
     "Sucesso",
     "Todas as configurações foram salvas no navegador!",
@@ -677,6 +737,8 @@ function limparCacheSistema() {
       "plaza_tarifario",
       "plaza_festividade",
       "plaza_valor_almoco",
+      "plaza_valor_janta",
+      "plaza_valor_lanche",
       "plaza_valor_kwh",
       "plaza_total_uhs",
       "plaza_comodidades_mestre",
@@ -689,6 +751,18 @@ function limparCacheSistema() {
       "plaza_promo_texto",
       "plaza_promo_somente_alta",
       "plaza_promo_msg_baixa",
+      "plaza_horarios_refeicoes",
+      // ========== NOVAS CHAVES ==========
+      "plaza_orc_titulo",
+      "plaza_orc_config_titulo",
+      "plaza_orc_config_descricao",
+      "plaza_orc_nota_refeicoes",
+      "plaza_orc_cronograma",
+      "plaza_orc_pagamento",
+      "plaza_orc_observacoes",
+      "plaza_orc_rodape",
+      "plaza_orc_sinal_percentual",
+      // ==================================
     ];
     chaves.forEach((k) => localStorage.removeItem(k));
     fecharConfirm();
@@ -721,7 +795,7 @@ function exportarBackup() {
     c.baixa[1] = b1 ? parseMoney(b1.value) : c.baixa[1];
   });
 
-  // 2. Captura horários e checkboxes atuais
+  // Captura horários (incluindo lanche)
   const hAtual = {
     cafe: [
       document.getElementById("cfg_hor_cafe_start").value,
@@ -732,6 +806,11 @@ function exportarBackup() {
       document.getElementById("cfg_hor_almoco_start").value,
       document.getElementById("cfg_hor_almoco_end").value,
       document.getElementById("cfg_check_almoco").checked,
+    ],
+    lanche: [
+      document.getElementById("cfg_hor_lanche_start").value,
+      document.getElementById("cfg_hor_lanche_end").value,
+      document.getElementById("cfg_check_lanche").checked,
     ],
     janta: [
       document.getElementById("cfg_hor_janta_start").value,
@@ -761,6 +840,8 @@ function exportarBackup() {
     t: categoriasAtuais,
     f: document.getElementById("cfg_fest").value,
     a: parseMoney(document.getElementById("cfg_alm").value),
+    j: parseMoney(document.getElementById("cfg_janta").value), // valor janta
+    l: parseMoney(document.getElementById("cfg_lanche").value), // valor lanche
     k: parseMoney(document.getElementById("cfg_kwh").value),
     ai: document.getElementById("cfg_alta_inicio").value,
     af: document.getElementById("cfg_alta_fim").value,
@@ -768,7 +849,20 @@ function exportarBackup() {
     c: document.getElementById("cfg_comodidades_globais").value.split(","),
     h: hAtual,
     p: promo,
+    // Textos do orçamento
+    orc_titulo: document.getElementById("cfg_orc_titulo").value,
+    orc_config_titulo: document.getElementById("cfg_orc_config_titulo").value,
+    orc_config_descricao: document.getElementById("cfg_orc_config_descricao")
+      .value,
+    orc_nota_refeicoes: document.getElementById("cfg_orc_nota_refeicoes").value,
+    orc_cronograma: document.getElementById("cfg_orc_cronograma").value,
+    orc_pagamento: document.getElementById("cfg_orc_pagamento").value,
+    orc_observacoes: document.getElementById("cfg_orc_observacoes").value,
+    orc_rodape: document.getElementById("cfg_orc_rodape").value,
+    orc_sinal_percentual: document.getElementById("cfg_orc_sinal_percentual")
+      .value,
   };
+
   const blob = new Blob([JSON.stringify(dados, null, 2)], {
     type: "application/json",
   });
@@ -777,7 +871,6 @@ function exportarBackup() {
   a.href = url;
   a.download = `backup_plaza_config_${new Date().toISOString().slice(0, 10)}.json`;
   a.click();
-  // Revoga URL anterior (se houver) e guarda a nova para revogar ao fechar
   if (ultimoBlobUrlExport) {
     try {
       URL.revokeObjectURL(ultimoBlobUrlExport);
@@ -785,7 +878,6 @@ function exportarBackup() {
     ultimoBlobUrlExport = null;
   }
   ultimoBlobUrlExport = url;
-  // Mostrar mensagem de sucesso e deixar aberta até o usuário fechar
   showMsg("Sucesso", "Backup exportado com sucesso! Clique em OK.", "sucesso");
 }
 
@@ -803,7 +895,9 @@ function importarBackup(event) {
       localStorage.setItem("plaza_tarifario", JSON.stringify(d.t));
       localStorage.setItem("plaza_festividade", d.f);
       localStorage.setItem("plaza_valor_almoco", d.a);
+      if (d.j !== undefined) localStorage.setItem("plaza_valor_janta", d.j);
       if (d.k) localStorage.setItem("plaza_valor_kwh", d.k);
+      if (d.l !== undefined) localStorage.setItem("plaza_valor_lanche", d.l);
       if (d.ai) localStorage.setItem("plaza_alta_inicio", d.ai);
       if (d.af) localStorage.setItem("plaza_alta_fim", d.af);
       localStorage.setItem("plaza_total_uhs", d.u);
@@ -822,6 +916,31 @@ function importarBackup(event) {
         );
         localStorage.setItem("plaza_promo_msg_baixa", d.p.msgBaixa || false);
       }
+
+      // ========== RESTAURA NOVOS CAMPOS ==========
+      if (d.orc_titulo) localStorage.setItem("plaza_orc_titulo", d.orc_titulo);
+      if (d.orc_config_titulo)
+        localStorage.setItem("plaza_orc_config_titulo", d.orc_config_titulo);
+      if (d.orc_config_descricao)
+        localStorage.setItem(
+          "plaza_orc_config_descricao",
+          d.orc_config_descricao,
+        );
+      if (d.orc_nota_refeicoes)
+        localStorage.setItem("plaza_orc_nota_refeicoes", d.orc_nota_refeicoes);
+      if (d.orc_cronograma)
+        localStorage.setItem("plaza_orc_cronograma", d.orc_cronograma);
+      if (d.orc_pagamento)
+        localStorage.setItem("plaza_orc_pagamento", d.orc_pagamento);
+      if (d.orc_observacoes)
+        localStorage.setItem("plaza_orc_observacoes", d.orc_observacoes);
+      if (d.orc_rodape) localStorage.setItem("plaza_orc_rodape", d.orc_rodape);
+      if (d.orc_sinal_percentual)
+        localStorage.setItem(
+          "plaza_orc_sinal_percentual",
+          d.orc_sinal_percentual,
+        );
+      // ===========================================
 
       abrirModal();
       showMsg("Sucesso", "Dados importados com sucesso!", "sucesso");

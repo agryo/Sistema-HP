@@ -109,18 +109,18 @@
           🍽️ Todos com Almoço
         </button>
         <button
-          id="btnBulkJanta"
-          class="btn btn-bulk"
-          onclick="toggleAll('janta')"
-        >
-          🍛 Todos com Janta
-        </button>
-        <button
           id="btnBulkLanche"
           class="btn btn-bulk"
           onclick="toggleAll('lanche')"
         >
           🥪 Todos com Lanche
+        </button>
+        <button
+          id="btnBulkJanta"
+          class="btn btn-bulk"
+          onclick="toggleAll('janta')"
+        >
+          🍛 Todos com Janta
         </button>
       </div>
 
@@ -141,26 +141,35 @@
         </div>
       </div>
 
-      <div class="doc-title">Orçamento de Hospedagem</div>
-
-      <p style="font-size: 11px">
-        À <strong><span id="docCliente">Nome do Cliente</span></strong
-        >,
-      </p>
-      <p style="font-size: 10px">
-        Proposta para o período de <span id="docPeriodo">--</span> (<span
-          id="docNoites"
-          >0</span
+      <!-- Título dinâmico -->
+      <div class="doc-title" id="docTitulo">Orçamento de Hospedagem</div>
+      <br />
+      <div class="configuracao-section">
+        <strong> PROPOSTA DE HOSPEDAGEM: </strong>
+        <span id="docCliente">Nome do Cliente</span>
+      </div>
+      <br />
+      <!-- Seção de Configuração (título + descrição) -->
+      <div class="configuracao-section">
+        <strong id="docConfigTitulo"
+          >1. Configuração de Acomodação e Valores</strong
         >
-        <span id="labelDiaria">diária</span>):
-      </p>
+        <p id="docConfigDescricao"></p>
+        <p>
+          Proposta para o período de <span id="docPeriodo">--</span> (<span
+            id="docNoites"
+            >0</span
+          >
+          <span id="labelDiaria">diária</span>):
+        </p>
+      </div>
 
       <table>
         <thead>
           <tr>
             <th style="width: 30px">Qtd</th>
             <th>Acomodação</th>
-            <th style="width: 150px">Serviços</th>
+            <th style="width: 220px">Serviços</th>
             <th>Vlr. Diária</th>
             <th>Diárias</th>
             <th>Total</th>
@@ -175,45 +184,26 @@
         </tfoot>
       </table>
 
-      <div class="check-info-box">
-        <span
-          >📥 <strong>Check-in:</strong> <span id="checkinData">--</span> (<span
-            id="checkinHora"
-            >--</span
-          >)</span
-        >
-        <span
-          >📤 <strong>Check-out:</strong>
-          <span id="checkoutData">--</span> (<span id="checkoutHora">--</span
-          >)</span
-        >
+      <!-- Nota após tabela -->
+      <div class="nota-section">
+        <strong id="docNotaRefeicoes"></strong>
       </div>
-
-      <div class="obs-doc">
-        <strong>Observações:</strong>
-        <ul style="margin: 3px 0; padding-left: 15px">
-          <li>Incluso Wi-Fi e Estacionamento monitorado.</li>
-          <li>Café da manhã: <span id="obsHorCafe">--</span>.</li>
-          <li>
-            Almoço opcional: <span id="obsValorAlmoco">--</span> por pessoa
-            (<span id="obsHorAlmoco">--</span>).
-          </li>
-          <li>
-            Lanche à tarde opcional: <span id="obsValorLanche">--</span> por
-            pessoa (<span id="obsHorLanche">--</span>).
-          </li>
-          <li>
-            Janta opcional: <span id="obsValorJanta">--</span> por pessoa (<span
-              id="obsHorJanta"
-              >--</span
-            >).
-          </li>
-          <li>Proposta válida por 48 horas, sujeita a disponibilidade.</li>
-        </ul>
+      <br />
+      <!-- Seções dinâmicas do orçamento -->
+      <div class="configuracao-section">
+        <strong>Cronograma de Estadia e Logística:</strong>
+        <p id="docCronograma"></p>
+        <strong>Condições de Pagamento e Prazos:</strong>
+        <p id="docPagamento"></p>
+        <strong>Observações Gerais:</strong>
+        <p id="docObservacoes"></p>
       </div>
-
+      <br />
+      <!-- Rodapé com assinaturas dinâmicas -->
       <div class="footer-assinaturas">
-        <div class="assinatura-box">Setor de Reservas - Hotel Plaza</div>
+        <div class="assinatura-box" id="docRodape">
+          Setor de Reservas - Hotel Plaza
+        </div>
         <div class="assinatura-box">
           Aceite do Cliente (Carimbo e Assinatura)
         </div>

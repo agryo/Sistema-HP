@@ -24,24 +24,40 @@ let categorias = [
 let listaItens = [];
 let idParaExcluir = null;
 
+// Variáveis para textos do orçamento
+let orcTitulo = "Orçamento de Hospedagem";
+let orcConfigTitulo = "1. Configuração de Acomodação e Valores";
+let orcConfigDescricao = "";
+let orcNotaRefeicoes = "";
+let orcCronograma = "";
+let orcPagamento = "";
+let orcObservacoes = "";
+let orcRodape = "Setor de Reservas - Hotel Plaza";
+let orcSinalPercentual = 50;
+
 function showMsg(titulo, texto, tipo = "sucesso") {
-  document.getElementById("msgTitle").innerText = titulo;
-  document.getElementById("msgText").innerText = texto;
-  document.getElementById("msgIcon").innerText =
-    tipo === "sucesso" ? "✅" : "❌";
-  document.getElementById("modalMsg").style.display = "block";
+  const elMsgTitle = document.getElementById("msgTitle");
+  const elMsgText = document.getElementById("msgText");
+  const elMsgIcon = document.getElementById("msgIcon");
+  const elModalMsg = document.getElementById("modalMsg");
+  if (elMsgTitle) elMsgTitle.innerText = titulo;
+  if (elMsgText) elMsgText.innerText = texto;
+  if (elMsgIcon) {
+    elMsgIcon.innerText = tipo === "sucesso" ? "✅" : "❌";
+    elMsgIcon.style.color = tipo === "sucesso" ? "#25d366" : "#dc3545";
+  }
+  if (elModalMsg) elModalMsg.style.display = "block";
 }
 
 function fecharModalMsg() {
-  document.getElementById("modalMsg").style.display = "none";
+  const modal = document.getElementById("modalMsg");
+  if (modal) modal.style.display = "none";
 }
 
-// utilities
 function capitalize(s) {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
-// converte "HH:MM" em minutos desde meia-noite
 function parseTime(str) {
   const [h, m] = (str || "0:00").split(":").map(Number);
   return h * 60 + m;
@@ -56,8 +72,8 @@ function updateBulkButtons() {
   const labels = {
     cafe: "☕ Café",
     almoco: "🍽️ Almoço",
-    janta: "🍛 Janta",
     lanche: "🥪 Lanche",
+    janta: "🍛 Janta",
   };
   ["cafe", "almoco", "janta", "lanche"].forEach((meal) => {
     const btn = document.getElementById("btnBulk" + capitalize(meal));
@@ -75,27 +91,17 @@ function carregarConfiguracoes() {
     try {
       const parsed = JSON.parse(precos);
       categorias = parsed.t || parsed;
-      // Garante que todas as categorias tenham 'cap' calculado corretamente
       categorias.forEach((cat) => {
-        // Sempre recalcula cap baseado em casal e solteiro se eles existem
         const casal = cat.casal || 0;
         const solteiro = cat.solteiro || 0;
         const capCalculado = casal * 2 + solteiro;
-
-        // Se cap não existe, ou se é diferente do calculado, atualiza
-        if (!cat.cap || cat.cap !== capCalculado) {
-          cat.cap = capCalculado;
-        }
-
-        // VALIDAÇÃO: grupo="solteiro" só é válido para UHs com nome contendo "Single" ou nomes específicos
-        // Limpa grupo inválido para UHs Triplo, Duplo, etc
+        if (!cat.cap || cat.cap !== capCalculado) cat.cap = capCalculado;
         if (
           cat.grupo === "solteiro" &&
           !cat.nome.includes("Single") &&
           cat.cap > 1
-        ) {
+        )
           delete cat.grupo;
-        }
       });
     } catch (err) {
       categorias = [];
@@ -107,6 +113,24 @@ function carregarConfiguracoes() {
   if (vJanta) valorJantaGlobal = parseFloat(vJanta);
   const vLanche = localStorage.getItem("plaza_valor_lanche");
   if (vLanche) valorLancheGlobal = parseFloat(vLanche);
+
+  // Carrega textos do orçamento
+  orcTitulo =
+    localStorage.getItem("plaza_orc_titulo") || "Orçamento de Hospedagem";
+  orcConfigTitulo =
+    localStorage.getItem("plaza_orc_config_titulo") ||
+    "1. Configuração de Acomodação e Valores";
+  orcConfigDescricao = localStorage.getItem("plaza_orc_config_descricao") || "";
+  orcNotaRefeicoes = localStorage.getItem("plaza_orc_nota_refeicoes") || "";
+  orcCronograma = localStorage.getItem("plaza_orc_cronograma") || "";
+  orcPagamento = localStorage.getItem("plaza_orc_pagamento") || "";
+  orcObservacoes = localStorage.getItem("plaza_orc_observacoes") || "";
+  orcRodape =
+    localStorage.getItem("plaza_orc_rodape") ||
+    "Setor de Reservas - Hotel Plaza";
+  orcSinalPercentual = parseInt(
+    localStorage.getItem("plaza_orc_sinal_percentual") || "50",
+  );
 }
 
 function adicionarLinha() {
@@ -141,14 +165,10 @@ function confirmarExclusao() {
 function removerLinha(id) {
   idParaExcluir = id;
   const modal = document.getElementById("modalConfirmDelete");
-  if (modal) {
-    modal.style.display = "block";
-  } else {
-    // Fallback caso o modal não tenha sido injetado por algum motivo
-    if (confirm("Deseja realmente excluir este item?")) {
-      listaItens = listaItens.filter((i) => i.id !== id);
-      renderizarEdicao();
-    }
+  if (modal) modal.style.display = "block";
+  else if (confirm("Deseja realmente excluir este item?")) {
+    listaItens = listaItens.filter((i) => i.id !== id);
+    renderizarEdicao();
   }
 }
 
@@ -168,24 +188,25 @@ function marcarTodos(campo, valor) {
 
 function renderizarEdicao() {
   const container = document.getElementById("edicaoItens");
+  if (!container) return;
   container.innerHTML = listaItens
     .map(
       (item) => `
-		<div class="form-row" style="background:#f1f3f4; padding:10px; border-radius:8px; align-items:center; border:1px solid #ddd; margin-bottom:8px;">
-			<div style="flex:0.4"><label>Qtd</label><input type="number" class="input-qtd" value="${item.qtd}" min="1" oninput="editar(${item.id}, 'qtd', parseInt(this.value))"></div>
-			<div style="flex:2.5"><label>Acomodação</label><select onchange="editar(${item.id}, 'catId', this.value)" style="width:100%">
-				${categorias.map((c) => `<option value="${c.id}" ${item.catId == c.id ? "selected" : ""}>${c.nome}</option>`).join("")}
-			</select></div>
-			<div style="flex:3.5"><label>Função / Equipe</label><input type="text" value="${item.cargo}" oninput="editar(${item.id}, 'cargo', this.value)" style="width:100%"></div>
-			<div style="flex:2; display:flex; gap:10px; padding-top:18px; flex-wrap:wrap;">
-				<label style="font-size:11px; display:flex; align-items:center;"><input type="checkbox" ${item.cafe ? "checked" : ""} onchange="editar(${item.id}, 'cafe', this.checked)"> Café</label>
-				<label style="font-size:11px; display:flex; align-items:center;"><input type="checkbox" ${item.almoco ? "checked" : ""} onchange="editar(${item.id}, 'almoco', this.checked)"> Almoço</label>
-				<label style="font-size:11px; display:flex; align-items:center;"><input type="checkbox" ${item.janta ? "checked" : ""} onchange="editar(${item.id}, 'janta', this.checked)"> Janta</label>
-				<label style="font-size:11px; display:flex; align-items:center;"><input type="checkbox" ${item.lanche ? "checked" : ""} onchange="editar(${item.id}, 'lanche', this.checked)"> Lanche</label>
-			</div>
-			<div style="padding-top:18px;"><button class="btn-remover" style="background:#ff4d4d; color:white; border:none; padding:8px; border-radius:4px; cursor:pointer;" onclick="removerLinha(${item.id})">🗑️</button></div>
-		</div>
-	`,
+    <div class="form-row" style="background:#f1f3f4; padding:10px; border-radius:8px; align-items:center; border:1px solid #ddd; margin-bottom:8px;">
+      <div style="flex:0.4"><label>Qtd</label><input type="number" class="input-qtd" value="${item.qtd}" min="1" oninput="editar(${item.id}, 'qtd', parseInt(this.value))"></div>
+      <div style="flex:2.5"><label>Acomodação</label><select onchange="editar(${item.id}, 'catId', this.value)" style="width:100%">
+        ${categorias.map((c) => `<option value="${c.id}" ${item.catId == c.id ? "selected" : ""}>${c.nome}</option>`).join("")}
+      </select></div>
+      <div style="flex:3.5"><label>Função / Equipe</label><input type="text" value="${item.cargo}" oninput="editar(${item.id}, 'cargo', this.value)" style="width:100%"></div>
+      <div style="flex:2; display:flex; gap:10px; padding-top:18px; flex-wrap:wrap;">
+        <label style="font-size:11px; display:flex; align-items:center;"><input type="checkbox" ${item.cafe ? "checked" : ""} onchange="editar(${item.id}, 'cafe', this.checked)"> Café</label>
+        <label style="font-size:11px; display:flex; align-items:center;"><input type="checkbox" ${item.almoco ? "checked" : ""} onchange="editar(${item.id}, 'almoco', this.checked)"> Almoço</label>
+        <label style="font-size:11px; display:flex; align-items:center;"><input type="checkbox" ${item.janta ? "checked" : ""} onchange="editar(${item.id}, 'janta', this.checked)"> Janta</label>
+        <label style="font-size:11px; display:flex; align-items:center;"><input type="checkbox" ${item.lanche ? "checked" : ""} onchange="editar(${item.id}, 'lanche', this.checked)"> Lanche</label>
+      </div>
+      <div style="padding-top:18px;"><button class="btn-remover" style="background:#ff4d4d; color:white; border:none; padding:8px; border-radius:4px; cursor:pointer;" onclick="removerLinha(${item.id})">🗑️</button></div>
+    </div>
+  `,
     )
     .join("");
   atualizarDoc();
@@ -194,23 +215,99 @@ function renderizarEdicao() {
 
 function formatarCamas(cat) {
   let texto = [];
-  if (cat.casal > 0) {
+  if (cat.casal > 0)
     texto.push(
       cat.casal > 1 ? `${cat.casal} Camas Casal` : `${cat.casal} Cama Casal`,
     );
-  }
-  if (cat.solteiro > 0) {
+  if (cat.solteiro > 0)
     texto.push(
       cat.solteiro > 1
         ? `${cat.solteiro} Camas Solteiro`
         : `${cat.solteiro} Cama Solteiro`,
     );
-  }
   return texto.length > 0 ? ` (${texto.join(" + ")})` : "";
 }
 
+function formatarDataBR(dataISO) {
+  if (!dataISO) return "";
+  const [ano, mes, dia] = dataISO.split("-");
+  return `${dia}/${mes}/${ano}`;
+}
+
+function substituirPlaceholders(texto) {
+  if (!texto) return texto;
+
+  const d1Input = document.getElementById("dataEntrada")?.value;
+  const d2Input = document.getElementById("dataSaida")?.value;
+  let checkinDataBr = "",
+    checkoutDataBr = "";
+  if (d1Input) {
+    const d1 = new Date(d1Input + "T00:00:00");
+    checkinDataBr = d1.toLocaleDateString("pt-BR");
+  }
+  if (d2Input) {
+    const d2 = new Date(d2Input + "T00:00:00");
+    checkoutDataBr = d2.toLocaleDateString("pt-BR");
+  }
+
+  const vars = {
+    // Horários e datas
+    checkinHora: document.getElementById("horaEntradaPrev")?.value || "14:00",
+    checkoutHora: document.getElementById("horaSaidaPrev")?.value || "11:00",
+    checkinData: d1Input || "",
+    checkoutData: d2Input || "",
+    checkinDataBr: checkinDataBr,
+    checkoutDataBr: checkoutDataBr,
+    // Valores das refeições
+    valorAlmoco: valorAlmocoGlobal.toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }),
+    valorJanta: valorJantaGlobal.toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }),
+    valorLanche: valorLancheGlobal.toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }),
+    // Total calculado
+    totalGeral: document.getElementById("totalGeral")?.innerText || "R$ 0,00",
+    // Número de diárias
+    noites: document.getElementById("docNoites")?.innerText || "0",
+    // Nome do cliente
+    cliente: document.getElementById("clienteNome")?.value || "",
+    // Temporada selecionada
+    temporada: document.getElementById("temporada")?.value || "auto",
+    // Percentual de sinal configurado
+    sinalPercentual: orcSinalPercentual,
+    // Promoções (se existirem)
+    percentualDesconto: localStorage.getItem("plaza_promo_porcentagem") || "0",
+    minimoDiarias: localStorage.getItem("plaza_promo_min_diarias") || "0",
+    textoPromocao: localStorage.getItem("plaza_promo_texto") || "",
+    // Horas extras (se houver)
+    horasExtras: (() => {
+      const extra = parseFloat(
+        localStorage.getItem("plaza_ultimas_horas_extras") || "0",
+      );
+      return extra > 0 ? extra.toFixed(0) : "0";
+    })(),
+    mensagemHorasExtras: (() => {
+      const extra = parseFloat(
+        localStorage.getItem("plaza_ultimas_horas_extras") || "0",
+      );
+      return extra > 0
+        ? `Horas Extras (Day Use): Estão contabilizadas ${extra.toFixed(0)} horas de prolongamento na estadia após o vencimento da diária.`
+        : "";
+    })(),
+  };
+
+  return texto.replace(/{(\w+)}/g, (match, chave) => {
+    return vars.hasOwnProperty(chave) ? vars[chave] : match;
+  });
+}
+
 function atualizarDoc() {
-  // Recarrega valores das refeições do localStorage para garantir que sempre estejam atualizados
   const vAlmoco = localStorage.getItem("plaza_valor_almoco");
   if (vAlmoco) valorAlmocoGlobal = parseFloat(vAlmoco);
   const vJanta = localStorage.getItem("plaza_valor_janta");
@@ -218,7 +315,8 @@ function atualizarDoc() {
   const vLanche = localStorage.getItem("plaza_valor_lanche");
   if (vLanche) valorLancheGlobal = parseFloat(vLanche);
 
-  // load schedule times
+  carregarConfiguracoes();
+
   let horarios = {
     cafe: ["07:00", "09:00", true],
     almoco: ["11:00", "13:00", true],
@@ -232,37 +330,47 @@ function atualizarDoc() {
     horarios = Object.assign(horarios, h);
   } catch (e) {}
 
-  document.getElementById("docCliente").innerText =
-    document.getElementById("clienteNome").value || "Nome do Cliente";
-  document.getElementById("obsValorAlmoco").innerText =
-    valorAlmocoGlobal.toLocaleString("pt-BR", {
+  const elDocCliente = document.getElementById("docCliente");
+  if (elDocCliente)
+    elDocCliente.innerText =
+      document.getElementById("clienteNome")?.value || "Nome do Cliente";
+
+  const elObsValorAlmoco = document.getElementById("obsValorAlmoco");
+  if (elObsValorAlmoco)
+    elObsValorAlmoco.innerText = valorAlmocoGlobal.toLocaleString("pt-BR", {
       style: "currency",
       currency: "BRL",
     });
-  document.getElementById("obsValorJanta").innerText =
-    valorJantaGlobal.toLocaleString("pt-BR", {
+  const elObsValorJanta = document.getElementById("obsValorJanta");
+  if (elObsValorJanta)
+    elObsValorJanta.innerText = valorJantaGlobal.toLocaleString("pt-BR", {
       style: "currency",
       currency: "BRL",
     });
-  document.getElementById("obsValorLanche").innerText =
-    valorLancheGlobal.toLocaleString("pt-BR", {
+  const elObsValorLanche = document.getElementById("obsValorLanche");
+  if (elObsValorLanche)
+    elObsValorLanche.innerText = valorLancheGlobal.toLocaleString("pt-BR", {
       style: "currency",
       currency: "BRL",
     });
 
-  document.getElementById("obsHorCafe").innerText =
-    `${horarios.cafe[0]} às ${horarios.cafe[1]}`;
-  document.getElementById("obsHorAlmoco").innerText =
-    `${horarios.almoco[0]} às ${horarios.almoco[1]}`;
-  document.getElementById("obsHorJanta").innerText =
-    `${horarios.janta[0]} às ${horarios.janta[1]}`;
-  document.getElementById("obsHorLanche").innerText =
-    `${horarios.lanche[0]} às ${horarios.lanche[1]}`;
+  const elObsHorCafe = document.getElementById("obsHorCafe");
+  if (elObsHorCafe)
+    elObsHorCafe.innerText = `${horarios.cafe[0]} às ${horarios.cafe[1]}`;
+  const elObsHorAlmoco = document.getElementById("obsHorAlmoco");
+  if (elObsHorAlmoco)
+    elObsHorAlmoco.innerText = `${horarios.almoco[0]} às ${horarios.almoco[1]}`;
+  const elObsHorJanta = document.getElementById("obsHorJanta");
+  if (elObsHorJanta)
+    elObsHorJanta.innerText = `${horarios.janta[0]} às ${horarios.janta[1]}`;
+  const elObsHorLanche = document.getElementById("obsHorLanche");
+  if (elObsHorLanche)
+    elObsHorLanche.innerText = `${horarios.lanche[0]} às ${horarios.lanche[1]}`;
 
-  const d1Input = document.getElementById("dataEntrada").value;
-  const d2Input = document.getElementById("dataSaida").value; // values already constrained by handlers
-  const horaEnt = document.getElementById("horaEntradaPrev").value || "14:00";
-  const horaSai = document.getElementById("horaSaidaPrev").value || "11:00";
+  const d1Input = document.getElementById("dataEntrada")?.value;
+  const d2Input = document.getElementById("dataSaida")?.value;
+  const horaEnt = document.getElementById("horaEntradaPrev")?.value || "14:00";
+  const horaSai = document.getElementById("horaSaidaPrev")?.value || "11:00";
 
   if (!d1Input || !d2Input) return;
 
@@ -270,47 +378,48 @@ function atualizarDoc() {
   const d2 = new Date(d2Input + "T00:00:00");
   const noites = Math.max(1, Math.ceil((d2 - d1) / (1000 * 60 * 60 * 24)));
 
-  // arrival/departure minutes
   const [hEnt, mEnt] = horaEnt.split(":").map(Number);
   const [hSai, mSai] = horaSai.split(":").map(Number);
   const arrMin = hEnt * 60 + mEnt;
   const depMin = hSai * 60 + mSai;
 
-  // cálculo de horas ocupadas (entrada com hora, saída com hora)
   const dtArrivalFull = new Date(d1Input + "T" + horaEnt);
   const dtDepartFull = new Date(d2Input + "T" + horaSai);
-  // período padrão: 21 horas a partir da chegada
-  const occupiedHours = Math.max(
-    0,
-    (dtDepartFull - dtArrivalFull) / (1000 * 60 * 60),
-  );
   const dtStandardEnd = new Date(dtArrivalFull.getTime() + 21 * 60 * 60 * 1000);
   const extraHoursGlobal = Math.max(
     0,
     (dtDepartFull - dtStandardEnd) / (1000 * 60 * 60),
   );
-  console.log(
-    `DEBUG HORAS: occupiedHours=${occupiedHours.toFixed(2)}, standardEnd=${dtStandardEnd.toISOString()}, extraHoursGlobal=${extraHoursGlobal.toFixed(2)}`,
+
+  localStorage.setItem(
+    "plaza_ultimas_horas_extras",
+    extraHoursGlobal.toFixed(2),
   );
 
-  document.getElementById("docPeriodo").innerText =
-    `${d1.toLocaleDateString("pt-BR")} a ${d2.toLocaleDateString("pt-BR")}`;
-  document.getElementById("docNoites").innerText = noites;
-  document.getElementById("labelDiaria").innerText =
-    noites === 1 ? "diária" : "diárias";
-  document.getElementById("checkinData").innerText =
-    d1.toLocaleDateString("pt-BR");
-  document.getElementById("checkinHora").innerText = horaEnt;
-  document.getElementById("checkoutData").innerText =
-    d2.toLocaleDateString("pt-BR");
-  document.getElementById("checkoutHora").innerText = horaSai;
+  const elDocPeriodo = document.getElementById("docPeriodo");
+  if (elDocPeriodo)
+    elDocPeriodo.innerText = `${d1.toLocaleDateString("pt-BR")} a ${d2.toLocaleDateString("pt-BR")}`;
+  const elDocNoites = document.getElementById("docNoites");
+  if (elDocNoites) elDocNoites.innerText = noites;
+  const elLabelDiaria = document.getElementById("labelDiaria");
+  if (elLabelDiaria)
+    elLabelDiaria.innerText = noites === 1 ? "diária" : "diárias";
+  const elCheckinData = document.getElementById("checkinData");
+  if (elCheckinData) elCheckinData.innerText = d1.toLocaleDateString("pt-BR");
+  const elCheckinHora = document.getElementById("checkinHora");
+  if (elCheckinHora) elCheckinHora.innerText = horaEnt;
+  const elCheckoutData = document.getElementById("checkoutData");
+  if (elCheckoutData) elCheckoutData.innerText = d2.toLocaleDateString("pt-BR");
+  const elCheckoutHora = document.getElementById("checkoutHora");
+  if (elCheckoutHora) elCheckoutHora.innerText = horaSai;
 
-  const temp = document.getElementById("temporada").value;
+  const temp = document.getElementById("temporada")?.value;
   const tabela = document.getElementById("tabelaCorpo");
+  if (!tabela) return;
+
   let total = 0;
   tabela.innerHTML = "";
 
-  // Preparação para cálculo misto
   const altaInicioStr = localStorage.getItem("plaza_alta_inicio");
   const altaFimStr = localStorage.getItem("plaza_alta_fim");
 
@@ -318,25 +427,17 @@ function atualizarDoc() {
     const cat = categorias.find((c) => c.id === item.catId);
     if (!cat) return;
 
-    // Validação: se cap está vazio, força recalcular baseado em casal/solteiro
     if (!cat.cap || cat.cap === 0) {
-      const casal = cat.casal || 0;
-      const solteiro = cat.solteiro || 0;
-      cat.cap = casal * 2 + solteiro;
-      console.warn(
-        `AVISO: ${cat.nome} tinha cap inválido. Recalculado para ${cat.cap}`,
-      );
+      cat.cap = (cat.casal || 0) * 2 + (cat.solteiro || 0);
     }
 
     let somaUnitario = 0;
 
     if (temp === "auto") {
-      // Cálculo dia a dia
       let current = new Date(d1);
       current.setHours(0, 0, 0, 0);
       const end = new Date(d2);
       end.setHours(0, 0, 0, 0);
-
       while (current < end) {
         let isAlta = false;
         if (altaInicioStr && altaFimStr) {
@@ -350,41 +451,41 @@ function atualizarDoc() {
       }
     } else {
       const p = temp === "alta" ? cat.alta : cat.baixa;
-      const vDia = item.cafe ? p[0] : p[1];
-      somaUnitario = vDia * noites;
+      somaUnitario = (item.cafe ? p[0] : p[1]) * noites;
     }
 
-    // efetiva de capacidade por unidade
     const capEfetiva = cat.grupo === "solteiro" ? 1 : cat.cap || 1;
-
-    // Guarda o total de acomodação (diárias) antes de adicionar refeições
     const baseAccommodationTotal = somaUnitario;
 
-    // Cálculo de refeições de acordo com horários e entrada/saída
     let mealTotal = 0;
-    if (item.almoco || item.janta || item.lanche) {
-      // contagem direta sem loop para evitar complicação
+    let countAlmoco = 0,
+      countLanche = 0,
+      countJanta = 0;
+    if (item.almoco || item.lanche || item.janta) {
       const middleDays = Math.max(0, noites - 1);
       if (item.almoco) {
         let count = 0;
         if (arrMin <= parseTime(horarios.almoco[1])) count++;
         if (depMin >= parseTime(horarios.almoco[0])) count++;
         count += middleDays;
+        countAlmoco = count;
         mealTotal += count * valorAlmocoGlobal;
-      }
-      if (item.janta) {
-        let count = 0;
-        if (arrMin <= parseTime(horarios.janta[1])) count++;
-        if (depMin >= parseTime(horarios.janta[0])) count++;
-        count += middleDays;
-        mealTotal += count * valorJantaGlobal;
       }
       if (item.lanche) {
         let count = 0;
         if (arrMin <= parseTime(horarios.lanche[1])) count++;
         if (depMin >= parseTime(horarios.lanche[0])) count++;
         count += middleDays;
+        countLanche = count;
         mealTotal += count * valorLancheGlobal;
+      }
+      if (item.janta) {
+        let count = 0;
+        if (arrMin <= parseTime(horarios.janta[1])) count++;
+        if (depMin >= parseTime(horarios.janta[0])) count++;
+        count += middleDays;
+        countJanta = count;
+        mealTotal += count * valorJantaGlobal;
       }
       mealTotal *= capEfetiva;
       somaUnitario += mealTotal;
@@ -393,52 +494,84 @@ function atualizarDoc() {
     const sub = somaUnitario * item.qtd;
     total += sub;
 
-    // cálculo de horas extras: usa a parte de acomodação (baseAccommodationTotal)
     let extraCharge = 0;
     if (extraHoursGlobal > 0 && noites > 0) {
-      const baseDaily = baseAccommodationTotal / noites; // valor da diária (acomodação + café se estava incluso)
-      const hourlyRate = baseDaily / 21; // valor por hora
+      const baseDaily = baseAccommodationTotal / noites;
+      const hourlyRate = baseDaily / 21;
       extraCharge = hourlyRate * extraHoursGlobal * item.qtd;
-      console.log(
-        `DEBUG EXTRA ${cat.nome}: baseDaily=${baseDaily}, hourlyRate=${hourlyRate}, extraCharge=${extraCharge}, qtd=${item.qtd}`,
-      );
       total += extraCharge;
     }
 
     const vDiariaMedia = somaUnitario / noites;
-
     const infoCamas = formatarCamas(cat);
-
     const totalComExtra = sub + extraCharge;
 
+    let servicosStr = item.cafe ? "Com Café" : "Sem Café";
+    if (countAlmoco > 0)
+      servicosStr += ` + ${countAlmoco} Almoço${countAlmoco > 1 ? "s" : ""}`;
+    if (countLanche > 0)
+      servicosStr += ` + ${countLanche} Lanche${countLanche > 1 ? "s" : ""}`;
+    if (countJanta > 0)
+      servicosStr += ` + ${countJanta} Janta${countJanta > 1 ? "s" : ""}`;
+
     tabela.innerHTML += `<tr>
-			<td>${item.qtd}</td>
-			<td><strong>${cat.nome}${infoCamas}</strong>${item.cargo ? "<br><small>• " + item.cargo + "</small>" : ""}</td>
-			<td>${(item.cafe ? "Com Café" : "Sem Café") + (item.almoco ? " + Almoço" : "") + (item.janta ? " + Janta" : "") + (item.lanche ? " + Lanche" : "")}</td>
-			<td>${vDiariaMedia.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</td>
-			<td>${sub.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}${extraCharge > 0 ? `<br><small>+ ${extraCharge.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })} (${Math.round(extraHoursGlobal)} horas extra)</small>` : ""}</td>
-			<td>${totalComExtra.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</td>
-		</tr>`;
+      <td>${item.qtd}</td>
+      <td><strong>${cat.nome}${infoCamas}</strong>${item.cargo ? "<br><small>• " + item.cargo + "</small>" : ""}</td>
+      <td>${servicosStr}</td>
+      <td>${vDiariaMedia.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</td>
+      <td>${sub.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}${extraCharge > 0 ? `<br><small>+ ${extraCharge.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })} (${Math.round(extraHoursGlobal)} horas extra)</small>` : ""}</td>
+      <td>${totalComExtra.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</td>
+    </tr>`;
   });
-  document.getElementById("totalGeral").innerText = total.toLocaleString(
-    "pt-BR",
-    { style: "currency", currency: "BRL" },
-  );
+
+  const elTotalGeral = document.getElementById("totalGeral");
+  if (elTotalGeral)
+    elTotalGeral.innerText = total.toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    });
+
+  // Atualiza novos elementos de texto
+  const elDocTitulo = document.getElementById("docTitulo");
+  if (elDocTitulo) elDocTitulo.innerText = substituirPlaceholders(orcTitulo);
+
+  const elConfigTitulo = document.getElementById("docConfigTitulo");
+  if (elConfigTitulo)
+    elConfigTitulo.innerText = substituirPlaceholders(orcConfigTitulo);
+  const elConfigDesc = document.getElementById("docConfigDescricao");
+  if (elConfigDesc)
+    elConfigDesc.innerText = substituirPlaceholders(orcConfigDescricao);
+
+  const elNota = document.getElementById("docNotaRefeicoes");
+  if (elNota) elNota.innerText = substituirPlaceholders(orcNotaRefeicoes);
+
+  const elDocCronograma = document.getElementById("docCronograma");
+  if (elDocCronograma)
+    elDocCronograma.innerText = substituirPlaceholders(orcCronograma);
+  const elDocPagamento = document.getElementById("docPagamento");
+  if (elDocPagamento)
+    elDocPagamento.innerText = substituirPlaceholders(orcPagamento);
+  const elDocObservacoes = document.getElementById("docObservacoes");
+  if (elDocObservacoes)
+    elDocObservacoes.innerText = substituirPlaceholders(orcObservacoes);
+  const elDocRodape = document.getElementById("docRodape");
+  if (elDocRodape) elDocRodape.innerText = substituirPlaceholders(orcRodape);
 }
 
 function exportarOrcamento() {
   const dados = {
     cabecalho: "ORCAMENTO_SALVO_PLAZA",
-    cliente: document.getElementById("clienteNome").value,
-    temporada: document.getElementById("temporada").value,
-    entrada: document.getElementById("dataEntrada").value,
-    saida: document.getElementById("dataSaida").value,
+    cliente: document.getElementById("clienteNome")?.value || "",
+    temporada: document.getElementById("temporada")?.value || "auto",
+    entrada: document.getElementById("dataEntrada")?.value || "",
+    saida: document.getElementById("dataSaida")?.value || "",
+    horaEntrada: document.getElementById("horaEntradaPrev").value || "14:00",
+    horaSaida: document.getElementById("horaSaidaPrev").value || "11:00",
     itens: listaItens,
     valorAlmoco: valorAlmocoGlobal,
     valorJanta: valorJantaGlobal,
     valorLanche: valorLancheGlobal,
   };
-
   const blob = new Blob([JSON.stringify(dados, null, 2)], {
     type: "application/json",
   });
@@ -450,22 +583,23 @@ function exportarOrcamento() {
     (dados.cliente.replace(/\s+/g, "_") || "hospedagem") +
     ".json";
   a.click();
-
-  setTimeout(() => {
-    showMsg("Orçamento Exportado", "O arquivo foi gerado e salvo com sucesso.");
-  }, 500);
+  setTimeout(
+    () =>
+      showMsg(
+        "Orçamento Exportado",
+        "O arquivo foi gerado e salvo com sucesso.",
+      ),
+    500,
+  );
 }
 
 function importarOrcamento(event) {
   const file = event.target.files[0];
   if (!file) return;
-
   const reader = new FileReader();
   reader.onload = function (e) {
     try {
       const data = JSON.parse(e.target.result);
-
-      // VALIDAÇÃO DA ASSINATURA RIGOROSA
       if (!data || data.cabecalho !== "ORCAMENTO_SALVO_PLAZA") {
         showMsg(
           "Arquivo Inválido",
@@ -475,30 +609,36 @@ function importarOrcamento(event) {
         event.target.value = "";
         return;
       }
-
-      // Captura o estado atual da tela para comparação
       const estadoAtual = {
         cabecalho: "ORCAMENTO_SALVO_PLAZA",
-        cliente: document.getElementById("clienteNome").value,
-        temporada: document.getElementById("temporada").value,
-        entrada: document.getElementById("dataEntrada").value,
-        saida: document.getElementById("dataSaida").value,
+        cliente: document.getElementById("clienteNome")?.value || "",
+        temporada: document.getElementById("temporada")?.value || "auto",
+        entrada: document.getElementById("dataEntrada")?.value || "",
+        saida: document.getElementById("dataSaida")?.value || "",
+        horaEntrada:
+          document.getElementById("horaEntradaPrev")?.value || "14:00",
+        horaSaida: document.getElementById("horaSaidaPrev")?.value || "11:00",
         itens: listaItens,
         valorAlmoco: valorAlmocoGlobal,
       };
-
-      // Compara se o arquivo é idêntico ao que já está na tela
       if (JSON.stringify(estadoAtual) === JSON.stringify(data)) {
         showMsg(
           "Nenhuma Alteração",
           "O orçamento na tela já é idêntico ao arquivo selecionado.",
         );
       } else {
-        // Se for diferente, carrega os dados e restaura
-        document.getElementById("clienteNome").value = data.cliente || "";
-        document.getElementById("temporada").value = data.temporada || "baixa";
-        document.getElementById("dataEntrada").value = data.entrada || "";
-        document.getElementById("dataSaida").value = data.saida || "";
+        const elCliente = document.getElementById("clienteNome");
+        if (elCliente) elCliente.value = data.cliente || "";
+        const elTemporada = document.getElementById("temporada");
+        if (elTemporada) elTemporada.value = data.temporada || "baixa";
+        const elEntrada = document.getElementById("dataEntrada");
+        if (elEntrada) elEntrada.value = data.entrada || "";
+        const elSaida = document.getElementById("dataSaida");
+        if (elSaida) elSaida.value = data.saida || "";
+        const elHoraEnt = document.getElementById("horaEntradaPrev");
+        if (elHoraEnt) elHoraEnt.value = data.horaEntrada || "14:00";
+        const elHoraSai = document.getElementById("horaSaidaPrev");
+        if (elHoraSai) elHoraSai.value = data.horaSaida || "11:00";
         listaItens = data.itens || [];
         renderizarEdicao();
         showMsg("Sucesso!", "O orçamento foi carregado e restaurado.");
@@ -510,7 +650,6 @@ function importarOrcamento(event) {
         "erro",
       );
     }
-    // CORREÇÃO DO BUG: Limpa o input para permitir selecionar o mesmo arquivo novamente
     event.target.value = "";
   };
   reader.readAsText(file);
@@ -518,7 +657,6 @@ function importarOrcamento(event) {
 
 window.onload = () => {
   carregarConfiguracoes();
-  // ensure date constraints
   const ent = document.getElementById("dataEntrada");
   const sai = document.getElementById("dataSaida");
   function adjustDates() {
@@ -535,34 +673,25 @@ window.onload = () => {
     }
     atualizarDoc();
   }
-  ent.addEventListener("change", adjustDates);
-  sai.addEventListener("change", adjustDates);
-  // times also affect meal calculations
-  document
-    .getElementById("horaEntradaPrev")
-    .addEventListener("change", atualizarDoc);
-  document
-    .getElementById("horaSaidaPrev")
-    .addEventListener("change", atualizarDoc);
+  if (ent) ent.addEventListener("change", adjustDates);
+  if (sai) sai.addEventListener("change", adjustDates);
+  const horaEnt = document.getElementById("horaEntradaPrev");
+  const horaSai = document.getElementById("horaSaidaPrev");
+  if (horaEnt) horaEnt.addEventListener("change", atualizarDoc);
+  if (horaSai) horaSai.addEventListener("change", atualizarDoc);
 
-  // Datas padrão (Hoje e Amanhã)
   const hoje = new Date().toISOString().split("T")[0];
-  document.getElementById("dataEntrada").value = hoje;
+  if (ent) ent.value = hoje;
   const amanha = new Date();
   amanha.setDate(amanha.getDate() + 1);
-  document.getElementById("dataSaida").value = amanha
-    .toISOString()
-    .split("T")[0];
+  if (sai) sai.value = amanha.toISOString().split("T")[0];
 
   adicionarLinha();
-
-  // Atualiza documento com os valores carregados
   atualizarDoc();
   updateBulkButtons();
   atualizarDoc();
 };
 
-// Listener para recarregar valores na visibilidade da página
 document.addEventListener("visibilitychange", () => {
   if (!document.hidden) {
     carregarConfiguracoes();

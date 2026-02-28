@@ -6,6 +6,53 @@
     <title>Painel de Controle - Hotel Plaza</title>
     <link rel="stylesheet" href="styles/global.css" />
     <link rel="stylesheet" href="styles/index.css" />
+    <style>
+      /* Estilos para as abas */
+      .tabs {
+        display: flex;
+        gap: 5px;
+        margin-bottom: 15px;
+        border-bottom: 2px solid #075e54;
+      }
+      .tab-button {
+        background: #f0f0f0;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-weight: bold;
+        border-radius: 8px 8px 0 0;
+        transition: 0.2s;
+      }
+      .tab-button.active {
+        background: #075e54;
+        color: white;
+      }
+      .tab-content {
+        display: none;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      /* Estilos para os campos de texto */
+      .config-textos {
+        background: #f9f9f9;
+        padding: 20px;
+        border-radius: 10px;
+        border: 1px solid #ddd;
+        margin-bottom: 20px;
+      }
+      .config-textos .input-group {
+        margin-bottom: 15px;
+      }
+      .config-textos textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 13px;
+        resize: vertical;
+      }
+    </style>
   </head>
   <body>
     <div class="container">
@@ -137,520 +184,639 @@
           >
         </div>
 
-        <div class="config-topo" style="flex-wrap: nowrap; align-items: center">
-          <div class="input-group">
-            <label>Nome da Festividade (Orçamento Rápido):</label>
-            <input type="text" id="cfg_fest" />
-          </div>
-          <div
-            class="input-group multi"
-            style="flex: 0 0 110px; min-width: 105px"
-          >
-            <label>Valor Almoço (R$):</label>
-            <input
-              type="text"
-              id="cfg_alm"
-              onchange="this.value = formatMoney(parseMoney(this.value))"
-            />
-            <label style="margin-top: 4px">Valor Janta (R$):</label>
-            <input
-              type="text"
-              id="cfg_janta"
-              onchange="this.value = formatMoney(parseMoney(this.value))"
-            />
-          </div>
-          <div
-            class="input-group multi"
-            style="flex: 0 0 110px; min-width: 105px"
-          >
-            <label>Valor Lanche (R$):</label>
-            <input
-              type="text"
-              id="cfg_lanche"
-              onchange="this.value = formatMoney(parseMoney(this.value))"
-            />
-            <label style="margin-top: 4px">Valor kWh (R$):</label>
-            <input
-              type="text"
-              id="cfg_kwh"
-              placeholder="1,80"
-              onchange="this.value = formatMoney(parseMoney(this.value))"
-            />
-          </div>
-
-          <div class="input-group">
-            <label>Qtd. Total de UHs:</label
-            ><input
-              type="number"
-              id="cfg_total_uhs"
-              oninput="renderizarChecksNumbers()"
-            />
-          </div>
-          <div class="input-group" style="flex: 0 0 565px; margin-right: 8px">
-            <label>Comodidades Globais (Separe por vírgula):</label>
-            <input
-              type="text"
-              id="cfg_comodidades_globais"
-              placeholder="Frigobar, TV, Hidro..."
-            />
-          </div>
-        </div>
-        <div class="config-middle">
-          <div
-            style="
-              display: flex;
-              gap: 15px;
-              border-right: 2px solid #ccc;
-              padding-right: 25px;
-            "
-          >
-            <div class="input-group" style="width: 135px">
-              <label>Início Alta Temp.:</label>
-              <input type="date" id="cfg_alta_inicio" />
-            </div>
-            <div class="input-group" style="width: 135px">
-              <label>Fim Alta Temp.:</label>
-              <input type="date" id="cfg_alta_fim" />
-            </div>
-          </div>
-          <div class="input-group" style="flex: 1; min-width: 300px">
-            <label>Horários das Refeições:</label>
-            <div
-              style="
-                display: flex;
-                gap: 14px;
-                align-items: center;
-                white-space: nowrap;
-                overflow-x: auto;
-              "
-            >
-              <div
-                style="
-                  display: flex;
-                  flex-direction: column;
-                  align-items: flex-start;
-                  gap: 4px;
-                  min-width: 120px;
-                "
-              >
-                <div style="display: flex; align-items: center; gap: 6px">
-                  <input
-                    type="checkbox"
-                    id="cfg_check_cafe"
-                    style="width: auto"
-                    title="Exibir nas mensagens"
-                  />
-                  <small
-                    style="font-size: 13px; font-weight: bold; color: #075e54"
-                    >Café:</small
-                  >
-                </div>
-                <div style="display: flex; gap: 4px">
-                  <input type="time" id="cfg_hor_cafe_start" />
-                  <input type="time" id="cfg_hor_cafe_end" />
-                </div>
-              </div>
-              <div
-                style="
-                  display: flex;
-                  flex-direction: column;
-                  align-items: flex-start;
-                  gap: 4px;
-                  min-width: 150px;
-                "
-              >
-                <div style="display: flex; align-items: center; gap: 6px">
-                  <input
-                    type="checkbox"
-                    id="cfg_check_almoco"
-                    style="width: auto"
-                    title="Exibir nas mensagens"
-                  />
-                  <small
-                    style="font-size: 13px; font-weight: bold; color: #075e54"
-                    >Almoço:</small
-                  >
-                </div>
-                <div style="display: flex; gap: 4px">
-                  <input type="time" id="cfg_hor_almoco_start" />
-                  <input type="time" id="cfg_hor_almoco_end" />
-                </div>
-              </div>
-              <div
-                style="
-                  display: flex;
-                  flex-direction: column;
-                  align-items: flex-start;
-                  gap: 4px;
-                  min-width: 120px;
-                "
-              >
-                <div style="display: flex; align-items: center; gap: 6px">
-                  <input
-                    type="checkbox"
-                    id="cfg_check_lanche"
-                    style="width: auto"
-                    title="Exibir nas mensagens"
-                  />
-                  <small
-                    style="font-size: 13px; font-weight: bold; color: #075e54"
-                    >Lanche da Tarde:</small
-                  >
-                </div>
-                <div style="display: flex; gap: 4px">
-                  <input type="time" id="cfg_hor_lanche_start" />
-                  <input type="time" id="cfg_hor_lanche_end" />
-                </div>
-              </div>
-              <div
-                style="
-                  display: flex;
-                  flex-direction: column;
-                  align-items: flex-start;
-                  gap: 4px;
-                  min-width: 120px;
-                "
-              >
-                <div style="display: flex; align-items: center; gap: 6px">
-                  <input
-                    type="checkbox"
-                    id="cfg_check_janta"
-                    style="width: auto"
-                    title="Exibir nas mensagens"
-                  />
-                  <small
-                    style="font-size: 13px; font-weight: bold; color: #075e54"
-                    >Lanche à Noite:</small
-                  >
-                </div>
-                <div style="display: flex; gap: 4px">
-                  <input type="time" id="cfg_hor_janta_start" />
-                  <input type="time" id="cfg_hor_janta_end" />
-                </div>
-              </div>
-            </div>
-          </div>
+        <!-- Abas -->
+        <div class="tabs">
+          <button class="tab-button active" onclick="openTab('geral')">
+            Geral
+          </button>
+          <button class="tab-button" onclick="openTab('textos')">
+            Textos do Orçamento
+          </button>
         </div>
 
-        <!-- BLOCO DE PROMOÇÕES -->
-        <div
-          class="config-middle"
-          style="background: #fff8e1; border: 1px solid #ffe082"
-        >
+        <!-- Aba Geral (conteúdo original) -->
+        <div id="tab-geral" class="tab-content active">
           <div
-            style="
-              width: 10%;
-              display: flex;
-              flex-direction: row;
-              align-items: center;
-            "
+            class="config-topo"
+            style="flex-wrap: nowrap; align-items: center"
           >
-            <div
-              class="input-group"
-              style="
-                flex: 0 0 auto;
-                display: flex;
-                align-items: center;
-                gap: 5px;
-                min-width: auto;
-              "
-            >
-              <input type="checkbox" id="cfg_promo_ativo" style="width: auto" />
-              <label
-                for="cfg_promo_ativo"
-                style="margin: 0; color: #d84315; font-weight: bold"
-                >ATIVAR</label
-              >
-              <span class="help-icon" tabindex="0"
-                >ℹ️
-                <span class="help-tooltip help-tooltip-right"
-                  >Liga/Desliga todo o sistema de promoções nos
-                  orçamentos.</span
-                >
-              </span>
+            <div class="input-group">
+              <label>Nome da Festividade (Orçamento Rápido):</label>
+              <input type="text" id="cfg_fest" />
             </div>
             <div
-              class="input-group"
-              style="
-                flex: 0 0 auto;
-                display: flex;
-                align-items: center;
-                gap: 5px;
-                min-width: auto;
-              "
+              class="input-group multi"
+              style="flex: 0 0 110px; min-width: 105px"
             >
-              <input
-                type="checkbox"
-                id="cfg_promo_somente_alta"
-                style="width: auto"
-                onchange="atualizarEstadoPromo()"
-              />
-              <label
-                for="cfg_promo_somente_alta"
-                style="
-                  margin: 0;
-                  color: #d84315;
-                  font-weight: bold;
-                  font-size: 11px;
-                "
-                >SÓ ALTA</label
-              >
-              <span class="help-icon" tabindex="0"
-                >ℹ️
-                <span class="help-tooltip"
-                  >Se marcado, o desconto só será aplicado se as datas
-                  selecionadas estiverem na Alta Temporada.</span
-                >
-              </span>
-            </div>
-            <div
-              class="input-group"
-              style="
-                flex: 0 0 auto;
-                display: flex;
-                align-items: center;
-                gap: 5px;
-                min-width: auto;
-              "
-            >
-              <input
-                type="checkbox"
-                id="cfg_promo_msg_baixa"
-                style="width: auto"
-              />
-              <label
-                for="cfg_promo_msg_baixa"
-                style="
-                  margin: 0;
-                  color: #d84315;
-                  font-weight: bold;
-                  font-size: 11px;
-                "
-                >MSG BAIXA</label
-              >
-              <span class="help-icon" tabindex="0"
-                >ℹ️
-                <span class="help-tooltip"
-                  >Exibe o texto da promoção na Baixa Temporada apenas como
-                  informativo, sem aplicar o desconto matemático.</span
-                >
-              </span>
-            </div>
-          </div>
-          <div style="width: 100%; display: flex; gap: 15px">
-            <div class="input-group" style="flex: 0 0 100px">
-              <label>Desconto (%):</label>
-              <input
-                type="number"
-                id="cfg_promo_porcentagem"
-                placeholder="15"
-              />
-            </div>
-            <div class="input-group" style="flex: 0 0 100px">
-              <label>Mín. Diárias:</label>
-              <input type="number" id="cfg_promo_min_diarias" placeholder="0" />
-            </div>
-            <div class="input-group" style="flex: 1">
-              <label>Condição / Forma de Pagamento:</label>
+              <label>Valor Almoço (R$):</label>
               <input
                 type="text"
-                id="cfg_promo_texto"
-                placeholder="Ex: Pagamento integral via Pix ou Dinheiro"
+                id="cfg_alm"
+                onchange="this.value = formatMoney(parseMoney(this.value))"
+              />
+              <label style="margin-top: 4px">Valor Janta (R$):</label>
+              <input
+                type="text"
+                id="cfg_janta"
+                onchange="this.value = formatMoney(parseMoney(this.value))"
+              />
+            </div>
+            <div
+              class="input-group multi"
+              style="flex: 0 0 110px; min-width: 105px"
+            >
+              <label>Valor Lanche (R$):</label>
+              <input
+                type="text"
+                id="cfg_lanche"
+                onchange="this.value = formatMoney(parseMoney(this.value))"
+              />
+              <label style="margin-top: 4px">Valor kWh (R$):</label>
+              <input
+                type="text"
+                id="cfg_kwh"
+                placeholder="1,80"
+                onchange="this.value = formatMoney(parseMoney(this.value))"
+              />
+            </div>
+
+            <div class="input-group">
+              <label>Qtd. Total de UHs:</label
+              ><input
+                type="number"
+                id="cfg_total_uhs"
+                oninput="renderizarChecksNumbers()"
+              />
+            </div>
+            <div class="input-group" style="flex: 0 0 565px; margin-right: 8px">
+              <label>Comodidades Globais (Separe por vírgula):</label>
+              <input
+                type="text"
+                id="cfg_comodidades_globais"
+                placeholder="Frigobar, TV, Hidro..."
               />
             </div>
           </div>
-        </div>
-
-        <div class="config-layout">
-          <div class="config-left">
-            <button class="btn-add-uh" onclick="adicionarUH()">
-              ➕ ADICIONAR NOVA UH
-            </button>
-            <div class="table-container">
-              <table>
-                <colgroup>
-                  <col style="width: 44%" />
-                  <col style="width: 13%" />
-                  <col style="width: 13%" />
-                  <col style="width: 13%" />
-                  <col style="width: 13%" />
-                  <col style="width: 4%" />
-                </colgroup>
-                <thead>
-                  <tr>
-                    <th rowspan="2">UH (Unidade)</th>
-                    <th colspan="2">Alta Temporada</th>
-                    <th colspan="2">Baixa Temporada</th>
-                    <th rowspan="2">Ações</th>
-                  </tr>
-                  <tr>
-                    <th class="sub-th">C/ Café</th>
-                    <th class="sub-th">S/ Café</th>
-                    <th class="sub-th">C/ Café</th>
-                    <th class="sub-th">S/ Café</th>
-                  </tr>
-                </thead>
-                <tbody id="corpoTabela"></tbody>
-              </table>
+          <div class="config-middle">
+            <div
+              style="
+                display: flex;
+                gap: 15px;
+                border-right: 2px solid #ccc;
+                padding-right: 25px;
+              "
+            >
+              <div class="input-group" style="width: 135px">
+                <label>Início Alta Temp.:</label>
+                <input type="date" id="cfg_alta_inicio" />
+              </div>
+              <div class="input-group" style="width: 135px">
+                <label>Fim Alta Temp.:</label>
+                <input type="date" id="cfg_alta_fim" />
+              </div>
             </div>
-          </div>
-
-          <div class="config-right">
-            <div class="painel-secao" id="painelDetalhes">
-              <h4
-                style="
-                  margin: 0 0 15px 0;
-                  color: #075e54;
-                  border-bottom: 1px solid #ddd;
-                  padding-bottom: 5px;
-                "
-              >
-                Detalhes:
-                <span id="detalhe_nome_uh_label">Selecione uma UH</span>
-              </h4>
-
-              <!-- Tipo de Ocupação centralizado acima dos campos de camas -->
+            <div class="input-group" style="flex: 1; min-width: 300px">
+              <label>Horários das Refeições:</label>
               <div
                 style="
                   display: flex;
-                  justify-content: center;
-                  gap: 10px;
-                  margin-bottom: 10px;
+                  gap: 14px;
+                  align-items: center;
+                  white-space: nowrap;
+                  overflow-x: auto;
                 "
               >
-                <div class="input-group" style="max-width: 420px; flex: none">
-                  <label style="text-align: center; display: block"
-                    >Tipo de Ocupação:</label
-                  >
-                  <div
-                    style="
-                      display: flex;
-                      justify-content: center;
-                      align-items: center;
-                      gap: 8px;
-                    "
-                  >
-                    <select
-                      id="detalhe_tipo_ocupacao"
-                      onchange="atualizarInfoUH()"
+                <div
+                  style="
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 4px;
+                    min-width: 120px;
+                  "
+                >
+                  <div style="display: flex; align-items: center; gap: 6px">
+                    <input
+                      type="checkbox"
+                      id="cfg_check_cafe"
+                      style="width: auto"
+                      title="Exibir nas mensagens"
+                    />
+                    <small
+                      style="font-size: 13px; font-weight: bold; color: #075e54"
+                      >Café:</small
                     >
-                      <option value="">Automático</option>
-                      <option value="casal">Casal</option>
-                      <option value="solteiro">Solteiro</option>
-                    </select>
-                    <span class="help-icon" tabindex="0"
-                      >ℹ️
-                      <span class="help-tooltip"
-                        >"Automático" define 'Casal' se houver cama de casal,
-                        caso contrário 'Solteiro'. A escolha só afeta UHs com
-                        capacidade até 2 pessoas.</span
-                      >
-                    </span>
+                  </div>
+                  <div style="display: flex; gap: 4px">
+                    <input type="time" id="cfg_hor_cafe_start" />
+                    <input type="time" id="cfg_hor_cafe_end" />
+                  </div>
+                </div>
+                <div
+                  style="
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 4px;
+                    min-width: 150px;
+                  "
+                >
+                  <div style="display: flex; align-items: center; gap: 6px">
+                    <input
+                      type="checkbox"
+                      id="cfg_check_almoco"
+                      style="width: auto"
+                      title="Exibir nas mensagens"
+                    />
+                    <small
+                      style="font-size: 13px; font-weight: bold; color: #075e54"
+                      >Almoço:</small
+                    >
+                  </div>
+                  <div style="display: flex; gap: 4px">
+                    <input type="time" id="cfg_hor_almoco_start" />
+                    <input type="time" id="cfg_hor_almoco_end" />
+                  </div>
+                </div>
+                <div
+                  style="
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 4px;
+                    min-width: 120px;
+                  "
+                >
+                  <div style="display: flex; align-items: center; gap: 6px">
+                    <input
+                      type="checkbox"
+                      id="cfg_check_lanche"
+                      style="width: auto"
+                      title="Exibir nas mensagens"
+                    />
+                    <small
+                      style="font-size: 13px; font-weight: bold; color: #075e54"
+                      >Lanche da Tarde:</small
+                    >
+                  </div>
+                  <div style="display: flex; gap: 4px">
+                    <input type="time" id="cfg_hor_lanche_start" />
+                    <input type="time" id="cfg_hor_lanche_end" />
+                  </div>
+                </div>
+                <div
+                  style="
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 4px;
+                    min-width: 120px;
+                  "
+                >
+                  <div style="display: flex; align-items: center; gap: 6px">
+                    <input
+                      type="checkbox"
+                      id="cfg_check_janta"
+                      style="width: auto"
+                      title="Exibir nas mensagens"
+                    />
+                    <small
+                      style="font-size: 13px; font-weight: bold; color: #075e54"
+                      >Lanche à Noite:</small
+                    >
+                  </div>
+                  <div style="display: flex; gap: 4px">
+                    <input type="time" id="cfg_hor_janta_start" />
+                    <input type="time" id="cfg_hor_janta_end" />
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
 
+          <!-- BLOCO DE PROMOÇÕES -->
+          <div
+            class="config-middle"
+            style="background: #fff8e1; border: 1px solid #ffe082"
+          >
+            <div
+              style="
+                width: 10%;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+              "
+            >
               <div
-                class="form-row"
-                style="display: flex; gap: 10px; margin-bottom: 15px"
-              >
-                <div class="input-group">
-                  <label>Camas Casal:</label>
-                  <select id="detalhe_casal" onchange="atualizarInfoUH()">
-                    <option value="0">Nenhuma</option>
-                    <option value="1">1 Cama Casal</option>
-                    <option value="2">2 Camas Casal</option>
-                  </select>
-                </div>
-                <div class="input-group">
-                  <label>Camas Solteiro:</label>
-                  <select id="detalhe_solteiro" onchange="atualizarInfoUH()">
-                    <option value="0">Nenhuma</option>
-                    <option value="1">1 Cama Solteiro</option>
-                    <option value="2">2 Camas Solteiro</option>
-                    <option value="3">3 Camas Solteiro</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="input-group" style="margin-bottom: 15px">
-                <label>Descrição / Diferencial:</label>
-                <textarea
-                  id="detalhe_desc"
-                  rows="2"
-                  oninput="atualizarInfoUH()"
-                  placeholder="Ex: Próximo à piscina..."
-                ></textarea>
-              </div>
-
-              <label style="font-weight: bold; font-size: 12px; color: #075e54"
-                >Números desta UH:</label
-              >
-              <div id="listaNumerosUH" class="uh-numbers-grid"></div>
-
-              <label
+                class="input-group"
                 style="
-                  font-weight: bold;
-                  font-size: 12px;
-                  color: #075e54;
-                  margin-top: 15px;
-                  display: block;
+                  flex: 0 0 auto;
+                  display: flex;
+                  align-items: center;
+                  gap: 5px;
+                  min-width: auto;
                 "
-                >Comodidades desta UH:</label
               >
-              <div id="listaComodidadesUH" class="comodidades-container"></div>
+                <input
+                  type="checkbox"
+                  id="cfg_promo_ativo"
+                  style="width: auto"
+                />
+                <label
+                  for="cfg_promo_ativo"
+                  style="margin: 0; color: #d84315; font-weight: bold"
+                  >ATIVAR</label
+                >
+                <span class="help-icon" tabindex="0"
+                  >ℹ️
+                  <span class="help-tooltip help-tooltip-right"
+                    >Liga/Desliga todo o sistema de promoções nos
+                    orçamentos.</span
+                  >
+                </span>
+              </div>
+              <div
+                class="input-group"
+                style="
+                  flex: 0 0 auto;
+                  display: flex;
+                  align-items: center;
+                  gap: 5px;
+                  min-width: auto;
+                "
+              >
+                <input
+                  type="checkbox"
+                  id="cfg_promo_somente_alta"
+                  style="width: auto"
+                  onchange="atualizarEstadoPromo()"
+                />
+                <label
+                  for="cfg_promo_somente_alta"
+                  style="
+                    margin: 0;
+                    color: #d84315;
+                    font-weight: bold;
+                    font-size: 11px;
+                  "
+                  >SÓ ALTA</label
+                >
+                <span class="help-icon" tabindex="0"
+                  >ℹ️
+                  <span class="help-tooltip"
+                    >Se marcado, o desconto só será aplicado se as datas
+                    selecionadas estiverem na Alta Temporada.</span
+                  >
+                </span>
+              </div>
+              <div
+                class="input-group"
+                style="
+                  flex: 0 0 auto;
+                  display: flex;
+                  align-items: center;
+                  gap: 5px;
+                  min-width: auto;
+                "
+              >
+                <input
+                  type="checkbox"
+                  id="cfg_promo_msg_baixa"
+                  style="width: auto"
+                />
+                <label
+                  for="cfg_promo_msg_baixa"
+                  style="
+                    margin: 0;
+                    color: #d84315;
+                    font-weight: bold;
+                    font-size: 11px;
+                  "
+                  >MSG BAIXA</label
+                >
+                <span class="help-icon" tabindex="0"
+                  >ℹ️
+                  <span class="help-tooltip"
+                    >Exibe o texto da promoção na Baixa Temporada apenas como
+                    informativo, sem aplicar o desconto matemático.</span
+                  >
+                </span>
+              </div>
+            </div>
+            <div style="width: 100%; display: flex; gap: 15px">
+              <div class="input-group" style="flex: 0 0 100px">
+                <label>Desconto (%):</label>
+                <input
+                  type="number"
+                  id="cfg_promo_porcentagem"
+                  placeholder="15"
+                />
+              </div>
+              <div class="input-group" style="flex: 0 0 100px">
+                <label>Mín. Diárias:</label>
+                <input
+                  type="number"
+                  id="cfg_promo_min_diarias"
+                  placeholder="0"
+                />
+              </div>
+              <div class="input-group" style="flex: 1">
+                <label>Condição / Forma de Pagamento:</label>
+                <input
+                  type="text"
+                  id="cfg_promo_texto"
+                  placeholder="Ex: Pagamento integral via Pix ou Dinheiro"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="config-layout">
+            <div class="config-left">
+              <button class="btn-add-uh" onclick="adicionarUH()">
+                ➕ ADICIONAR NOVA UH
+              </button>
+              <div class="table-container">
+                <table>
+                  <colgroup>
+                    <col style="width: 44%" />
+                    <col style="width: 13%" />
+                    <col style="width: 13%" />
+                    <col style="width: 13%" />
+                    <col style="width: 13%" />
+                    <col style="width: 4%" />
+                  </colgroup>
+                  <thead>
+                    <tr>
+                      <th rowspan="2">UH (Unidade)</th>
+                      <th colspan="2">Alta Temporada</th>
+                      <th colspan="2">Baixa Temporada</th>
+                      <th rowspan="2">Ações</th>
+                    </tr>
+                    <tr>
+                      <th class="sub-th">C/ Café</th>
+                      <th class="sub-th">S/ Café</th>
+                      <th class="sub-th">C/ Café</th>
+                      <th class="sub-th">S/ Café</th>
+                    </tr>
+                  </thead>
+                  <tbody id="corpoTabela"></tbody>
+                </table>
+              </div>
             </div>
 
-            <div class="painel-secao" style="border-top: 4px solid #075e54">
-              <h4 style="margin: 0 0 10px 0; color: #075e54">
-                🔐 Senha de Acesso
-              </h4>
-              <div class="input-group" style="position: relative">
-                <label>Alterar Senha do Sistema:</label>
-                <div
-                  style="position: relative; display: flex; align-items: center"
+            <div class="config-right">
+              <div class="painel-secao" id="painelDetalhes">
+                <h4
+                  style="
+                    margin: 0 0 15px 0;
+                    color: #075e54;
+                    border-bottom: 1px solid #ddd;
+                    padding-bottom: 5px;
+                  "
                 >
-                  <input
-                    type="password"
-                    id="cfg_senha_input"
-                    placeholder="Digite a nova senha"
-                    style="padding-right: 40px"
-                  />
-                  <button
-                    type="button"
-                    onclick="toggleVisibilidadeSenha('cfg_senha_input')"
+                  Detalhes:
+                  <span id="detalhe_nome_uh_label">Selecione uma UH</span>
+                </h4>
+
+                <!-- Tipo de Ocupação centralizado acima dos campos de camas -->
+                <div
+                  style="
+                    display: flex;
+                    justify-content: center;
+                    gap: 10px;
+                    margin-bottom: 10px;
+                  "
+                >
+                  <div class="input-group" style="max-width: 420px; flex: none">
+                    <label style="text-align: center; display: block"
+                      >Tipo de Ocupação:</label
+                    >
+                    <div
+                      style="
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        gap: 8px;
+                      "
+                    >
+                      <select
+                        id="detalhe_tipo_ocupacao"
+                        onchange="atualizarInfoUH()"
+                      >
+                        <option value="">Automático</option>
+                        <option value="casal">Casal</option>
+                        <option value="solteiro">Solteiro</option>
+                      </select>
+                      <span class="help-icon" tabindex="0"
+                        >ℹ️
+                        <span class="help-tooltip"
+                          >"Automático" define 'Casal' se houver cama de casal,
+                          caso contrário 'Solteiro'. A escolha só afeta UHs com
+                          capacidade até 2 pessoas.</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  class="form-row"
+                  style="display: flex; gap: 10px; margin-bottom: 15px"
+                >
+                  <div class="input-group">
+                    <label>Camas Casal:</label>
+                    <select id="detalhe_casal" onchange="atualizarInfoUH()">
+                      <option value="0">Nenhuma</option>
+                      <option value="1">1 Cama Casal</option>
+                      <option value="2">2 Camas Casal</option>
+                    </select>
+                  </div>
+                  <div class="input-group">
+                    <label>Camas Solteiro:</label>
+                    <select id="detalhe_solteiro" onchange="atualizarInfoUH()">
+                      <option value="0">Nenhuma</option>
+                      <option value="1">1 Cama Solteiro</option>
+                      <option value="2">2 Camas Solteiro</option>
+                      <option value="3">3 Camas Solteiro</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="input-group" style="margin-bottom: 15px">
+                  <label>Descrição / Diferencial:</label>
+                  <textarea
+                    id="detalhe_desc"
+                    rows="2"
+                    oninput="atualizarInfoUH()"
+                    placeholder="Ex: Próximo à piscina..."
+                  ></textarea>
+                </div>
+
+                <label
+                  style="font-weight: bold; font-size: 12px; color: #075e54"
+                  >Números desta UH:</label
+                >
+                <div id="listaNumerosUH" class="uh-numbers-grid"></div>
+
+                <label
+                  style="
+                    font-weight: bold;
+                    font-size: 12px;
+                    color: #075e54;
+                    margin-top: 15px;
+                    display: block;
+                  "
+                  >Comodidades desta UH:</label
+                >
+                <div
+                  id="listaComodidadesUH"
+                  class="comodidades-container"
+                ></div>
+              </div>
+
+              <div class="painel-secao" style="border-top: 4px solid #075e54">
+                <h4 style="margin: 0 0 10px 0; color: #075e54">
+                  🔐 Senha de Acesso
+                </h4>
+                <div class="input-group" style="position: relative">
+                  <label>Alterar Senha do Sistema:</label>
+                  <div
                     style="
-                      position: absolute;
-                      right: 5px;
-                      background: none;
-                      border: none;
-                      cursor: pointer;
-                      font-size: 18px;
-                      color: #666;
-                      padding: 5px;
+                      position: relative;
+                      display: flex;
+                      align-items: center;
                     "
                   >
-                    👁️
-                  </button>
+                    <input
+                      type="password"
+                      id="cfg_senha_input"
+                      placeholder="Digite a nova senha"
+                      style="padding-right: 40px"
+                    />
+                    <button
+                      type="button"
+                      onclick="toggleVisibilidadeSenha('cfg_senha_input')"
+                      style="
+                        position: absolute;
+                        right: 5px;
+                        background: none;
+                        border: none;
+                        cursor: pointer;
+                        font-size: 18px;
+                        color: #666;
+                        padding: 5px;
+                      "
+                    >
+                      👁️
+                    </button>
+                  </div>
                 </div>
+                <button
+                  class="btn-add-uh"
+                  style="width: 100%; margin-top: 10px; background: #666"
+                  onclick="abrirModalConfirmaSenha()"
+                >
+                  Mudar Senha
+                </button>
+                <button
+                  class="btn-add-uh"
+                  style="width: 100%; margin-top: 5px; background: #dc3545"
+                  onclick="removerSenhaSistema()"
+                >
+                  Remover Senha
+                </button>
               </div>
-              <button
-                class="btn-add-uh"
-                style="width: 100%; margin-top: 10px; background: #666"
-                onclick="abrirModalConfirmaSenha()"
-              >
-                Mudar Senha
-              </button>
-              <button
-                class="btn-add-uh"
-                style="width: 100%; margin-top: 5px; background: #dc3545"
-                onclick="removerSenhaSistema()"
-              >
-                Remover Senha
-              </button>
             </div>
           </div>
         </div>
+        <!-- Fim da aba Geral -->
+
+        <!-- Aba Textos do Orçamento -->
+        <div id="tab-textos" class="tab-content">
+          <div class="config-textos">
+            <h3 style="color: #075e54">Personalização do Orçamento</h3>
+            <div class="input-group">
+              <label>Título do Orçamento:</label>
+              <input
+                type="text"
+                id="cfg_orc_titulo"
+                placeholder="Orçamento de Hospedagem"
+              />
+            </div>
+            <div class="input-group">
+              <label>Título da Seção de Configuração:</label>
+              <input
+                type="text"
+                id="cfg_orc_config_titulo"
+                placeholder="1. Configuração de Acomodação e Valores"
+              />
+            </div>
+            <div class="input-group">
+              <label>Descrição da Seção de Configuração:</label>
+              <textarea
+                id="cfg_orc_config_descricao"
+                rows="2"
+                placeholder="Ex: A proposta contempla a estadia com café da manhã incluso..."
+              ></textarea>
+            </div>
+            <div class="input-group">
+              <label>Nota após a tabela:</label>
+              <textarea
+                id="cfg_orc_nota_refeicoes"
+                rows="2"
+                placeholder="Ex: Obs.: As quantidades de refeições descritas..."
+              ></textarea>
+            </div>
+            <div class="input-group">
+              <label>Cronograma de Estadia e Logística:</label>
+              <textarea
+                id="cfg_orc_cronograma"
+                rows="3"
+                placeholder="Ex: Check-in: {checkinHora} do dia {checkinData}. Check-out: {checkoutHora} do dia {checkoutData}. {mensagemHorasExtras}"
+              ></textarea>
+            </div>
+            <div class="input-group">
+              <label>Condições de Pagamento e Prazos:</label>
+              <textarea
+                id="cfg_orc_pagamento"
+                rows="3"
+                placeholder="Ex: Sinal de {sinalPercentual}% do valor total..."
+              ></textarea>
+            </div>
+            <div class="input-group">
+              <label>Observações Gerais:</label>
+              <textarea
+                id="cfg_orc_observacoes"
+                rows="3"
+                placeholder="Ex: Café da manhã incluso. Almoço {valorAlmoco}..."
+              ></textarea>
+            </div>
+            <div class="input-group">
+              <label>Texto do Rodapé (Assinaturas):</label>
+              <input
+                type="text"
+                id="cfg_orc_rodape"
+                placeholder="Setor de Reservas - Hotel Plaza"
+              />
+            </div>
+            <div class="input-group">
+              <label>Percentual de Sinal (%):</label>
+              <input
+                type="number"
+                id="cfg_orc_sinal_percentual"
+                value="50"
+                min="0"
+                max="100"
+                step="1"
+              />
+              <small style="color: #666"
+                >Valor usado no placeholder {sinalPercentual}</small
+              >
+            </div>
+          </div>
+        </div>
+        <!-- Fim da aba Textos -->
 
         <div class="backup-bar">
           <button class="btn-backup" onclick="exportarBackup()">
@@ -714,5 +880,72 @@
     </div>
 
     <script src="scripts/config-master.js"></script>
+    <script>
+      // Função para alternar entre as abas
+      function openTab(tabName) {
+        // Oculta todas as abas
+        var tabs = document.querySelectorAll(".tab-content");
+        tabs.forEach(function (tab) {
+          tab.classList.remove("active");
+        });
+        // Remove a classe active de todos os botões
+        var buttons = document.querySelectorAll(".tab-button");
+        buttons.forEach(function (button) {
+          button.classList.remove("active");
+        });
+        // Mostra a aba selecionada e ativa o botão
+        document.getElementById("tab-" + tabName).classList.add("active");
+        // Encontra o botão clicado e adiciona a classe active (o evento é passado pelo onclick)
+        // Como não temos o evento diretamente, podemos ativar pelo seletor baseado no texto
+        // Ou podemos passar o elemento clicado. Vamos modificar o onclick para passar o elemento.
+        // Para simplificar, vamos usar a abordagem de passar o elemento clicado.
+        // Mas como o onclick já está definido, vamos alterar a chamada no HTML para passar o this.
+        // Faremos isso abaixo.
+      }
+
+      // Para corrigir a ativação do botão, vamos alterar os onclick no HTML para passar o elemento.
+      // Como já está definido, podemos redefinir após o carregamento, mas é mais fácil modificar o HTML.
+      // Vamos ajustar os botões no HTML para: onclick="openTab('geral', this)" e similar.
+      // Farei isso diretamente no código acima, mas como estou gerando o HTML agora, posso corrigir.
+      // Vamos reescrever os botões das abas com a chamada correta.
+    </script>
+    <!-- Ajuste fino: substituir os botões das abas por uma versão que passe o elemento clicado -->
+    <script>
+      // Reescreve a função openTab para receber o elemento clicado
+      window.openTab = function (tabName, element) {
+        // Oculta todas as abas
+        var tabs = document.querySelectorAll(".tab-content");
+        tabs.forEach(function (tab) {
+          tab.classList.remove("active");
+        });
+        // Remove a classe active de todos os botões
+        var buttons = document.querySelectorAll(".tab-button");
+        buttons.forEach(function (button) {
+          button.classList.remove("active");
+        });
+        // Mostra a aba selecionada
+        document.getElementById("tab-" + tabName).classList.add("active");
+        // Ativa o botão clicado
+        element.classList.add("active");
+      };
+    </script>
+    <!-- Atualiza os botões para usar a nova função -->
+    <script>
+      // Como os botões já foram renderizados, podemos substituir seus atributos onclick
+      document.addEventListener("DOMContentLoaded", function () {
+        var geralBtn = document.querySelector(
+          ".tab-button[onclick=\"openTab('geral')\"]",
+        );
+        if (geralBtn) {
+          geralBtn.setAttribute("onclick", "openTab('geral', this)");
+        }
+        var textosBtn = document.querySelector(
+          ".tab-button[onclick=\"openTab('textos')\"]",
+        );
+        if (textosBtn) {
+          textosBtn.setAttribute("onclick", "openTab('textos', this)");
+        }
+      });
+    </script>
   </body>
 </html>

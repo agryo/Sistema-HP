@@ -26,6 +26,10 @@
   margin-bottom: 12px;
   flex-wrap: wrap;
 }
+.nota-section {
+  font-size: smaller;
+  text-align: -webkit-center;
+}
 .config-area label {
   font-weight: bold;
   font-size: 13px;
