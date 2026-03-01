@@ -736,6 +736,82 @@
         <div id="tab-textos" class="tab-content">
           <div class="config-textos">
             <h3 style="color: #075e54">Personalização do Orçamento</h3>
+
+            <!-- Caixa de ajuda colapsável com placeholders e formatação -->
+            <details
+              style="
+                background: #e7f3f0;
+                padding: 10px 15px;
+                border-radius: 8px;
+                margin-bottom: 20px;
+                font-size: 13px;
+              "
+            >
+              <summary
+                style="font-weight: bold; color: #075e54; cursor: pointer"
+              >
+                📌 Clique para ver os placeholders disponíveis e dicas de
+                formatação
+              </summary>
+              <div style="margin-top: 15px">
+                <strong style="color: #075e54">Placeholders:</strong>
+                <ul
+                  style="margin: 10px 0 10px 20px; columns: 2; column-gap: 30px"
+                >
+                  <li><code>{cliente}</code> – Nome do cliente</li>
+                  <li><code>{checkinHora}</code> – Hora de entrada</li>
+                  <li><code>{checkoutHora}</code> – Hora de saída</li>
+                  <li><code>{checkinDataBr}</code> – Data entrada (pt-BR)</li>
+                  <li><code>{checkoutDataBr}</code> – Data saída (pt-BR)</li>
+                  <li><code>{noites}</code> – Número de diárias</li>
+                  <li><code>{totalGeral}</code> – Valor total</li>
+                  <li><code>{valorAlmoco}</code> – Valor do almoço</li>
+                  <li><code>{valorJanta}</code> – Valor da janta</li>
+                  <li><code>{valorLanche}</code> – Valor do lanche</li>
+                  <li><code>{sinalPercentual}</code> – % de sinal</li>
+                  <li><code>{horasExtras}</code> – Horas extras</li>
+                  <li>
+                    <code>{mensagemHorasExtras}</code> – Texto das horas extras
+                  </li>
+                  <li>
+                    <code>{percentualDesconto}</code> – % desconto (promoção)
+                  </li>
+                  <li>
+                    <code>{minimoDiarias}</code> – Mín. diárias (promoção)
+                  </li>
+                  <li><code>{textoPromocao}</code> – Texto da promoção</li>
+                  <li><code>{temporada}</code> – Temporada selecionada</li>
+                </ul>
+
+                <strong style="color: #075e54">🎨 Formatação com HTML:</strong>
+                <p style="margin: 5px 0 0 20px">
+                  Você pode usar tags HTML para estilizar os textos:
+                </p>
+                <ul style="margin: 5px 0 0 40px">
+                  <li>
+                    <code>&lt;strong&gt;negrito&lt;/strong&gt;</code> →
+                    <strong>negrito</strong>
+                  </li>
+                  <li>
+                    <code>&lt;em&gt;itálico&lt;/em&gt;</code> → <em>itálico</em>
+                  </li>
+                  <li>
+                    <code>&lt;u&gt;sublinhado&lt;/u&gt;</code> →
+                    <u>sublinhado</u>
+                  </li>
+                  <li><code>&lt;br&gt;</code> – quebra de linha</li>
+                  <li><code>&lt;p&gt;...&lt;/p&gt;</code> – novo parágrafo</li>
+                </ul>
+                <p style="margin: 10px 0 0 0; font-size: 12px; color: #666">
+                  Ex:
+                  <code
+                    >&lt;strong&gt;Check-in:&lt;/strong&gt; {checkinHora} do dia
+                    {checkinDataBr}.&lt;br&gt;</code
+                  >
+                </p>
+              </div>
+            </details>
+
             <div class="input-group">
               <label>Título do Orçamento:</label>
               <input
@@ -811,7 +887,7 @@
                 step="1"
               />
               <small style="color: #666"
-                >Valor usado no placeholder {sinalPercentual}</small
+                ><br />Valor usado no placeholder {sinalPercentual}</small
               >
             </div>
           </div>

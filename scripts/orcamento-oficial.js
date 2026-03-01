@@ -297,7 +297,7 @@ function substituirPlaceholders(texto) {
         localStorage.getItem("plaza_ultimas_horas_extras") || "0",
       );
       return extra > 0
-        ? `Horas Extras (Day Use): Estão contabilizadas ${extra.toFixed(0)} horas de prolongamento na estadia após o vencimento da diária.`
+        ? `<strong>Horas Extras (Day Use):</strong> Estão contabilizadas ${extra.toFixed(0)} horas de prolongamento na estadia após o vencimento da diária.`
         : "";
     })(),
   };
@@ -531,31 +531,31 @@ function atualizarDoc() {
       currency: "BRL",
     });
 
-  // Atualiza novos elementos de texto
+  // Atualiza novos elementos de texto com innerHTML (permite formatação)
   const elDocTitulo = document.getElementById("docTitulo");
-  if (elDocTitulo) elDocTitulo.innerText = substituirPlaceholders(orcTitulo);
+  if (elDocTitulo) elDocTitulo.innerHTML = substituirPlaceholders(orcTitulo);
 
   const elConfigTitulo = document.getElementById("docConfigTitulo");
   if (elConfigTitulo)
-    elConfigTitulo.innerText = substituirPlaceholders(orcConfigTitulo);
+    elConfigTitulo.innerHTML = substituirPlaceholders(orcConfigTitulo);
   const elConfigDesc = document.getElementById("docConfigDescricao");
   if (elConfigDesc)
-    elConfigDesc.innerText = substituirPlaceholders(orcConfigDescricao);
+    elConfigDesc.innerHTML = substituirPlaceholders(orcConfigDescricao);
 
   const elNota = document.getElementById("docNotaRefeicoes");
-  if (elNota) elNota.innerText = substituirPlaceholders(orcNotaRefeicoes);
+  if (elNota) elNota.innerHTML = substituirPlaceholders(orcNotaRefeicoes);
 
   const elDocCronograma = document.getElementById("docCronograma");
   if (elDocCronograma)
-    elDocCronograma.innerText = substituirPlaceholders(orcCronograma);
+    elDocCronograma.innerHTML = substituirPlaceholders(orcCronograma);
   const elDocPagamento = document.getElementById("docPagamento");
   if (elDocPagamento)
-    elDocPagamento.innerText = substituirPlaceholders(orcPagamento);
+    elDocPagamento.innerHTML = substituirPlaceholders(orcPagamento);
   const elDocObservacoes = document.getElementById("docObservacoes");
   if (elDocObservacoes)
-    elDocObservacoes.innerText = substituirPlaceholders(orcObservacoes);
+    elDocObservacoes.innerHTML = substituirPlaceholders(orcObservacoes);
   const elDocRodape = document.getElementById("docRodape");
-  if (elDocRodape) elDocRodape.innerText = substituirPlaceholders(orcRodape);
+  if (elDocRodape) elDocRodape.innerHTML = substituirPlaceholders(orcRodape);
 }
 
 function exportarOrcamento() {

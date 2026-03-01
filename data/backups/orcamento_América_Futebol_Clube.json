@@ -1,0 +1,44 @@
+{
+  "cabecalho": "ORCAMENTO_SALVO_PLAZA",
+  "cliente": "América Futebol Clube",
+  "temporada": "auto",
+  "entrada": "2026-03-27",
+  "saida": "2026-03-28",
+  "horaEntrada": "12:00",
+  "horaSaida": "20:00",
+  "itens": [
+    {
+      "id": 1772252881287,
+      "catId": "std_prom",
+      "qtd": 1,
+      "cafe": true,
+      "almoco": true,
+      "janta": true,
+      "lanche": true,
+      "cargo": "Presidência"
+    },
+    {
+      "id": 1772252918845,
+      "catId": "std_plus",
+      "qtd": 1,
+      "cafe": true,
+      "almoco": true,
+      "janta": true,
+      "lanche": true,
+      "cargo": "Comissão Técnica"
+    },
+    {
+      "id": 1772252919517,
+      "catId": "uh_1769990100266",
+      "qtd": 6,
+      "cafe": true,
+      "almoco": true,
+      "janta": true,
+      "lanche": true,
+      "cargo": "Jogadores"
+    }
+  ],
+  "valorAlmoco": 30,
+  "valorJanta": 30,
+  "valorLanche": 20
+}

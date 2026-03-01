@@ -142,18 +142,16 @@
       </div>
 
       <!-- Título dinâmico -->
-      <div class="doc-title" id="docTitulo">Orçamento de Hospedagem</div>
-      <br />
+      <div class="doc-title">Orçamento de Hospedagem</div>
       <div class="configuracao-section">
-        <strong> PROPOSTA DE HOSPEDAGEM: </strong>
-        <span id="docCliente">Nome do Cliente</span>
+        <h3>
+          PROPOSTA DE HOSPEDAGEM: <span id="docCliente">Nome do Cliente</span>
+        </h3>
       </div>
-      <br />
+
       <!-- Seção de Configuração (título + descrição) -->
       <div class="configuracao-section">
-        <strong id="docConfigTitulo"
-          >1. Configuração de Acomodação e Valores</strong
-        >
+        <h3 id="docConfigTitulo">1. Configuração de Acomodação e Valores</h3>
         <p id="docConfigDescricao"></p>
         <p>
           Proposta para o período de <span id="docPeriodo">--</span> (<span
@@ -177,6 +175,23 @@
         </thead>
         <tbody id="tabelaCorpo"></tbody>
         <tfoot>
+          <!-- Linha da observação (dentro da tabela) -->
+          <tr
+            id="linhaObservacao"
+            style="background: #f9f9f9; border-top: 2px solid #075e54"
+          >
+            <td
+              colspan="6"
+              style="
+                font-weight: bold;
+                text-align: left;
+                font-style: italic;
+                padding: 8px;
+              "
+              id="docNotaRefeicoes"
+            ></td>
+          </tr>
+          <!-- Linha do total -->
           <tr class="total-row">
             <td colspan="5" style="text-align: right">VALOR TOTAL:</td>
             <td id="totalGeral">R$ 0,00</td>
@@ -184,18 +199,13 @@
         </tfoot>
       </table>
 
-      <!-- Nota após tabela -->
-      <div class="nota-section">
-        <strong id="docNotaRefeicoes"></strong>
-      </div>
-      <br />
       <!-- Seções dinâmicas do orçamento -->
       <div class="configuracao-section">
-        <strong>Cronograma de Estadia e Logística:</strong>
+        <h3>2. Cronograma de Estadia e Logística:</h3>
         <p id="docCronograma"></p>
-        <strong>Condições de Pagamento e Prazos:</strong>
+        <h3>3. Condições de Pagamento e Prazos:</h3>
         <p id="docPagamento"></p>
-        <strong>Observações Gerais:</strong>
+        <h3>4. Observações Gerais:</h3>
         <p id="docObservacoes"></p>
       </div>
       <br />
